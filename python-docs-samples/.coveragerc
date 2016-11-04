@@ -1,0 +1,23 @@
+[run]
+include =
+    appengine/*
+    bigquery/*
+    bigtable/*
+    blog/*
+    compute/*
+    datastore/*
+    dataproc/*
+    dns/*
+    error_reporting/*
+    language/*
+    logging/*
+    monitoring/*
+    pubsub/*
+    speech/*
+    storage/*
+    translate/*
+    vision/*
+[report]
+exclude_lines =
+    pragma: NO COVER
+    if __name__ == '__main__':
