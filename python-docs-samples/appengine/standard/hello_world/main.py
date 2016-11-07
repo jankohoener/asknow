@@ -16,6 +16,7 @@ import webapp2
 import jinja2
 import os
 from google.appengine.ext import db
+import asknow
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), 
@@ -80,6 +81,7 @@ class NewPostHandler(Handler):
 		else:
 			self.render_form(subject = subject, content = content, error = 
 				'Needs a subject and a title!')
+			
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

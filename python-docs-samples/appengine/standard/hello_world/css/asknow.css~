@@ -1,0 +1,7 @@
+input[name=q] {
+	width: 80%;
+}
+
+label {
+	display: block;
+}

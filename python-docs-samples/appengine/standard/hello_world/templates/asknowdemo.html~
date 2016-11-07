@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>AskNow Demonstrator</title>
+	</head>
+	
+	<body>
+		<h1>AskNow Demonstrator</h1>
+		<form action="post">
+			<label>
+				Type in your question:
+				<input type="text">
+			</label>
+			<input type="submit">
+		</form>
+		{% block answer %}
+		{% endblock %}
+	</body>
+</html>

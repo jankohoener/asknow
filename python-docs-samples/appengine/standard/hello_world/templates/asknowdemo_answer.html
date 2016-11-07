@@ -1,0 +1,16 @@
+{% extends "asknowdemo.html" %}
+
+{% block answer %}
+<p class="answer">The answer to your question is: <b>{{answer.title}}</b></p><br>
+<div class="information">
+<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
+{{answer.abstract | safe}}
+<span class="wplink">Read further information at <a href="{{answer.wplink}}">Wikipedia</a>.</span>
+</div>
+<div class="image">
+An image of {{answer.title}}:<br>
+<img src="{{answer.imgsrc}}" alt="An image of {{answer.title}}">
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "asknowdemo.html" %}
+
+{% block answer %}
+<span class="answer">The answer is: <b>{{answer}}</b></span><br>
+<div class="abstract">More information on <b>{{answer}}</b>:<br>
+{{abstract}}</div>
+<span class="wplink">Read further information at <a href="{{wplink}}">Wikipedia</a>.</span>
+<img src="{{imgsrc}}" alt="An image of {{answer}}">
+
+{% endblock %}

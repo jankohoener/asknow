@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>AskNow Demonstrator</title>
+		<link rel="stylesheet" href="/css/asknow.css">
+	</head>
+	
+	<body>
+		<h1>AskNow Demonstrator</h1>
+		<form>
+			<label>
+				What's your question:
+				<input type="text" name="q" value="{{q}}">
+			</label>
+			<input type="submit">
+		</form>
+		{% block answer %}
+		{% endblock %}
+	</body>
+</html>
