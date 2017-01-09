@@ -77,7 +77,7 @@ class AskNowDemoHandler(Handler):
 	def retrieve_answer(self, q):
 		params = { 'q': q }
 		cur_answer = {}
-		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params)
+		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params) # FIXME
 		try:
 			result = urlfetch.fetch(url)
 			if result.status_code == 200:

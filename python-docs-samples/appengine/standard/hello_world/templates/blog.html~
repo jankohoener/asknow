@@ -5,7 +5,4 @@
 	<h2>{{post.subject}}</h2>
 	<p>{{post.content}}</p>
 	{% endfor %}
-	{% if timediff >= 0 %}
-		<div>Queried {{timediff}} seconds ago.</div>
-	{% endif %}
 {% endblock %}

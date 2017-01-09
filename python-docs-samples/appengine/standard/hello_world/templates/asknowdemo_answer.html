@@ -1,16 +1,22 @@
 {% extends "asknowdemo.html" %}
 
 {% block answer %}
-<p class="answer">The answer to your question is: <b>{{answer.title}}</b></p><br>
-<div class="information">
-<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
-{{answer.abstract | safe}}
-<span class="wplink">Read further information at <a href="{{answer.wplink}}">Wikipedia</a>.</span>
-</div>
-<div class="image">
-An image of {{answer.title}}:<br>
-<img src="{{answer.imgsrc}}" alt="An image of {{answer.title}}">
-</div>
-</div>
-
+	{% for answer in answers %}
+		{% if answer.error %}
+		<div class="error">We're sorry, AskNow could not answer your question: "{{answer.question}}".<br>
+		We have received the following error message: <span class="message">{{answer.message}}</span></div>
+		{% else %}
+		<p class="answer">The answer to your question "{{answer.question}}" is: <b>{{answer.title}}</b></p><br>
+		<div class="information">
+		<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
+		{{answer.abstract | safe}}
+		<span class="wplink">Read further information at <a href="{{answer.wplink}}">Wikipedia</a>.</span>
+		</div>
+		<div class="image">
+		An image of {{answer.title}}:<br>
+		<img src="{{answer.imgsrc}}" alt="An image of {{answer.title}}">
+		</div>
+		</div>
+		{% endif %}
+	{% endfor %}
 {% endblock %}

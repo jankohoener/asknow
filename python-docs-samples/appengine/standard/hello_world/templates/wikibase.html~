@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>{{title}} &ndash; Janko's wiki</title>
+	</head>
+	<body>
+	<h1>Janko's wiki</h1>
+	<h2>{{title}}</h2>
+	<span class="navlinks">
+	<a href="{{editlink}}">Edit</a> |
+	{% if user %}
+	<b>{{user}}</b> | <a href="/logout">Logout</a>
+	{% else %}
+	<a href="/login">Login</a>
+	{% endif %}
+	
+	</span>
+	
+	{% block content %}
+	{% endblock %}
+	
+	</body>
+
+
+</html>

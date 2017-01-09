@@ -1,14 +1,16 @@
 <html>
 	<head>
 		<title>AskNow Demonstrator</title>
+		<link rel="stylesheet" href="/css/asknow.css">
+		<meta charset="UTF-8">
 	</head>
 	
 	<body>
 		<h1>AskNow Demonstrator</h1>
-		<form action="post">
+		<form>
 			<label>
-				Type in your question:
-				<input type="text">
+				What's your question:
+				<input type="text" name="q" value="{{q}}">
 			</label>
 			<input type="submit">
 		</form>

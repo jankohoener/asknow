@@ -1,7 +1,25 @@
 input[name=q] {
-	width: 80%;
+	width: 70%;
 }
 
 label {
 	display: block;
+}
+body {
+	font-family: sans-serif;
+}
+.answer, .abstract, .image {
+	border: .5px solid grey;
+	padding: 5px;
+	margin: 4px;
+}
+.information {
+	display: table-row;
+}
+.abstract, .image {
+	display: table-cell;
+	width: 50%;
+}
+.image img {
+	width:100%;
 }
