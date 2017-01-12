@@ -38,7 +38,7 @@ class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
 		
-	def render_str(self, template, **params):
+	def render_str(self, template, **params):c
 		t = jinja_env.get_template(template)
 		return t.render(params)
 		
@@ -69,15 +69,15 @@ class AskNowUser(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	
 class AskNowQuestion(ndb.Model):
-	userid = ndb.KeyProperty(AskNowUser)
-	question = ndb.StringProperty()
+	userid = ndb.KeyProperty(AskNowUser, required=True)
+	question = ndb.StringProperty(required=True)
 	asked = ndb.DateTimeProperty(auto_now_add=True)
 		
 class AskNowDemoHandler(Handler):
-	def retrieve_answer(self, q):
+	def retrieve_answers(self, q): # FIXME
 		params = { 'q': q }
 		cur_answer = {}
-		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params) # FIXME
+		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params)
 		try:
 			result = urlfetch.fetch(url)
 			if result.status_code == 200:
@@ -133,8 +133,8 @@ class AskNowDemoHandler(Handler):
 		if not auth and q:
 			logging.info('Anonymous user asked question %s, loading answer' % q)
 			answers = []
-			answers.append(self.retrieve_answer(q))
-			logging.info('Answer loaded, rendering.')
+			answers.append(self.retrieve_answers(q))
+			logging.info('Answers loaded, rendering.')
 			self.render('asknowdemo_answer.html', answers = answers, q = q)
 			return
 		# if auth:
@@ -161,64 +161,75 @@ class AskNowDemoHandler(Handler):
 		memcache.set(qkey, display_questions)
 		logging.info('5 most recent questions added to cache, loading answers for questions.')
 		answers = []
-		for question in display_questions:
-			cur_answer = self.retrieve_answer(question)
-			if cur_answer:
-				answers.append(cur_answer)
-				logging.info('Retrieved answer for question "%s"' % question)
+		for question in display_questions: # FIXME
+			cur_answers = self.retrieve_answer(question)
+			if cur_answers and not cur_answer.error:
+				answers.append(cur_answers)
+				logging.info('Retrieved answers for question "%s"' % question)
+			elif cur_answers and cur_answer.error and question == q:
+				error = cur_answer.error
+				message = cur_answer.message
 		logging.info('Rendering answer page.')
-		self.render('asknowdemo_answer.html', answers = answers, q = q)
+		self.render('asknowdemo_answer.html', answers = answers, q = q, error = error, message = message)
 			
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
 
-	def retrieve_info(self, title):
-		answer = {}
-		answer['title'] = title
-		req = {}
-		req['action'] = 'query'
-		req['prop'] = 'info|pageimages|extracts'
-		req['titles'] = title
-		req['inprop'] = 'url'
-		req['piprop'] = 'original'
-		req['exintro'] = True
-		req['exsectionformat'] = 'raw'
-		req['format'] = 'json'
-		req['indexpageids'] = True
-		params = urllib.urlencode(req)
-		url = self.API_URL + '?' + params
-		urlobj = urllib.urlopen(url)
-		json_data = json.load(urlobj)
-		if json_data.get('error'):
-			answer['error'] = 3
-			answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
-			return answer
-		pageid = json_data['query']['pageids'][0]
-		answer['abstract'] = json_data['query']['pages'][pageid]['extract']
-		answer['wplink'] = json_data['query']['pages'][pageid]['fullurl']
-		answer['imgsrc'] = json_data['query']['pages'][pageid]['thumbnail']['original']
-		return answer
+	def retrieve_info(self, titles):
+		answers = {}
+		answers['answers'] = []
+		for title in titles:
+			answer = {}
+			answer['title'] = title
+			req = {}
+			req['action'] = 'query'
+			req['prop'] = 'info|pageimages|extracts'
+			req['titles'] = title
+			req['inprop'] = 'url'
+			req['piprop'] = 'original'
+			req['exintro'] = True
+			req['exsectionformat'] = 'raw'
+			req['format'] = 'json'
+			req['indexpageids'] = True
+			params = urllib.urlencode(req)
+			url = self.API_URL + '?' + params
+			urlobj = urllib.urlopen(url)
+			json_data = json.load(urlobj)
+			if json_data.get('error'):
+				answer['error'] = 3
+				answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
+				answers['answers'].append(answer)
+				continue
+			pageid = json_data['query']['pageids'][0]
+			answer['abstract'] = json_data['query']['pages'][pageid]['extract']
+			answer['wplink'] = json_data['query']['pages'][pageid]['fullurl']
+			answer['imgsrc'] = json_data['query']['pages'][pageid]['thumbnail']['original']
+			answers['answers'].append(answer)
+		return answers
 	
 	def get(self):
-		answers = {
-			'who is the president of the united states': 'Barack Obama',
-			'who is the president elect of the united states': 'Donald Trump',
-			'in which city was beethoven born': 'Bonn',
-			'in which city was adenauer born': 'Cologne',
-			'what country is shah rukh khan from': 'India'
+		known_answers = {
+			'who is the president of the united states': ['Barack Obama'],
+			'who is the president elect of the united states': ['Donald Trump'],
+			'in which city was beethoven born': ['Bonn'],
+			'in which city was adenauer born': ['Cologne'],
+			'what country is shah rukh khan from': ['India'],
+			'what are the capitals of germany and india': ['Berlin', 'New Delhi']
 		}
 		query = self.request.get('q')
 		question = self.request.get('q')
 		question = question.lower().replace('?', '')
-		answer = {}
+		answers = {}
 		if not question:
-			answer = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
-		if question in answers:
-			answer = self.retrieve_info(answers[question])
+			answers = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
+		elif question in known_answers:
+			answers = self.retrieve_info(known_answers[question])
+		# else:
+		# display info about entities
 		else:
-			answer = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
-		answer['question'] = query
-		json_string = json.dumps(answer)
+			answers = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
+		answers['question'] = query
+		json_string = json.dumps(answers)
 		self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
 		self.write(json_string)
 		

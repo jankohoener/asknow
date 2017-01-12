@@ -12,7 +12,7 @@
 				What's your question:
 				<input type="text" name="q" value="{{q}}">
 			</label>
-			<input type="submit">
+			<input type="submit" value="AskNow">
 		</form>
 		{% block answer %}
 		{% endblock %}

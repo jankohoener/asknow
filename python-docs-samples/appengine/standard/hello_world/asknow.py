@@ -14,67 +14,18 @@
 
 # -*- coding: utf-8 -*-
 
-import webapp2
-import jinja2
-import os
-import random
+#import webapp2
 import json
 import urllib
 from google.appengine.api import urlfetch
-from google.appengine.ext import ndb
 from google.appengine.api import memcache
-import hashlib, uuid
 import logging
-import re
-
-
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), 
-	autoescape = True)
-
-class Handler(webapp2.RequestHandler):
-	SECRET = "The AskNow secret"
-	
-	def write(self, *a, **kw):
-		self.response.out.write(*a, **kw)
-		
-	def render_str(self, template, **params):
-		t = jinja_env.get_template(template)
-		return t.render(params)
-		
-	def render(self, template, **kw):
-		self.write(self.render_str(template, **kw))
-		
-	def hash_str(self, s):
-		return hashlib.sha256(self.SECRET + str(s)).hexdigest()
-		
-	def reset_cookie(self, cookie):
-		self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % cookie)
-		
-	def generate_salt(self):
-		return uuid.uuid4().hex
-		
-	def generate_pwhash(self, password, salt):
-		return hashlib.sha512(password + salt).hexdigest()
-		
-	def verify_password(self, pwhash, password, salt):
-		return self.generate_pwhash(password, salt) == pwhash
-
-		
-class AskNowUser(ndb.Model):
-	username = ndb.StringProperty(required = True)
-	password = ndb.StringProperty(required = True)
-	salt = ndb.StringProperty(required = True)
-	email = ndb.StringProperty()
-	created = ndb.DateTimeProperty(auto_now_add=True)
-	
-class AskNowQuestion(ndb.Model):
-	userid = ndb.KeyProperty(AskNowUser)
-	question = ndb.StringProperty()
-	asked = ndb.DateTimeProperty(auto_now_add=True)
+from handlerlib import *
+from datatypes import *
+from userauth import *
 		
 class AskNowDemoHandler(Handler):
-	def retrieve_answer(self, q):
+	def retrieve_answers(self, q): # FIXME
 		params = { 'q': q }
 		cur_answer = {}
 		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params)
@@ -111,7 +62,7 @@ class AskNowDemoHandler(Handler):
 						logging.info('User not found in cache, retrieving from database.')
 						userkey = int(userkeystr)
 						user = AskNowUser.get_by_id(userkey)
-						logging.info('User retrieved from datavase')
+						logging.info('User retrieved from database')
 						memcache.set(key, user)
 					userdbkey = user.key
 					username = user.username	 
@@ -133,8 +84,8 @@ class AskNowDemoHandler(Handler):
 		if not auth and q:
 			logging.info('Anonymous user asked question %s, loading answer' % q)
 			answers = []
-			answers.append(self.retrieve_answer(q))
-			logging.info('Answer loaded, rendering.')
+			answers.append(self.retrieve_answers(q))
+			logging.info('Answers loaded, rendering.')
 			self.render('asknowdemo_answer.html', answers = answers, q = q)
 			return
 		# if auth:
@@ -162,152 +113,76 @@ class AskNowDemoHandler(Handler):
 		logging.info('5 most recent questions added to cache, loading answers for questions.')
 		answers = []
 		for question in display_questions:
-			cur_answer = self.retrieve_answer(question)
-			if cur_answer:
-				answers.append(cur_answer)
-				logging.info('Retrieved answer for question "%s"' % question)
+			cur_answers = self.retrieve_answer(question)
+			if cur_answers and not cur_answer.error:
+				answers.append(cur_answers)
+				logging.info('Retrieved answers for question "%s"' % question)
+			elif cur_answers and cur_answer.error and question == q:
+				error = cur_answer.error
+				message = cur_answer.message
 		logging.info('Rendering answer page.')
-		self.render('asknowdemo_answer.html', answers = answers, q = q)
+		self.render('asknowdemo_answer.html', answers = answers, q = q, error = error, message = message) # FIXME: referenced before declared
 			
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
 
-	def retrieve_info(self, title):
-		answer = {}
-		answer['title'] = title
-		req = {}
-		req['action'] = 'query'
-		req['prop'] = 'info|pageimages|extracts'
-		req['titles'] = title
-		req['inprop'] = 'url'
-		req['piprop'] = 'original'
-		req['exintro'] = True
-		req['exsectionformat'] = 'raw'
-		req['format'] = 'json'
-		req['indexpageids'] = True
-		params = urllib.urlencode(req)
-		url = self.API_URL + '?' + params
-		urlobj = urllib.urlopen(url)
-		json_data = json.load(urlobj)
-		if json_data.get('error'):
-			answer['error'] = 3
-			answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
-			return answer
-		pageid = json_data['query']['pageids'][0]
-		answer['abstract'] = json_data['query']['pages'][pageid]['extract']
-		answer['wplink'] = json_data['query']['pages'][pageid]['fullurl']
-		answer['imgsrc'] = json_data['query']['pages'][pageid]['thumbnail']['original']
-		return answer
+	def retrieve_info(self, titles):
+		answers = {}
+		answers['answers'] = []
+		for title in titles:
+			answer = {}
+			answer['title'] = title
+			req = {}
+			req['action'] = 'query'
+			req['prop'] = 'info|pageimages|extracts'
+			req['titles'] = title
+			req['inprop'] = 'url'
+			req['piprop'] = 'original'
+			req['exintro'] = True
+			req['exsectionformat'] = 'raw'
+			req['format'] = 'json'
+			req['indexpageids'] = True
+			params = urllib.urlencode(req)
+			url = self.API_URL + '?' + params
+			urlobj = urllib.urlopen(url)
+			json_data = json.load(urlobj)
+			if json_data.get('error'):
+				answer['error'] = 3
+				answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
+				answers['answers'].append(answer)
+				continue
+			pageid = json_data['query']['pageids'][0]
+			answer['abstract'] = json_data['query']['pages'][pageid]['extract']
+			answer['wplink'] = json_data['query']['pages'][pageid]['fullurl']
+			answer['imgsrc'] = json_data['query']['pages'][pageid]['thumbnail']['original']
+			answers['answers'].append(answer)
+		return answers
 	
 	def get(self):
-		answers = {
-			'who is the president of the united states': 'Barack Obama',
-			'who is the president elect of the united states': 'Donald Trump',
-			'in which city was beethoven born': 'Bonn',
-			'in which city was adenauer born': 'Cologne',
-			'what country is shah rukh khan from': 'India'
+		known_answers = {
+			'who is the president of the united states': ['Barack Obama'],
+			'who is the president elect of the united states': ['Donald Trump'],
+			'in which city was beethoven born': ['Bonn'],
+			'in which city was adenauer born': ['Cologne'],
+			'what country is shah rukh khan from': ['India'],
+			'what are the capitals of germany and india': ['Berlin', 'New Delhi']
 		}
 		query = self.request.get('q')
 		question = self.request.get('q')
 		question = question.lower().replace('?', '')
-		answer = {}
+		answers = {}
 		if not question:
-			answer = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
-		if question in answers:
-			answer = self.retrieve_info(answers[question])
+			answers = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
+		elif question in known_answers:
+			answers = self.retrieve_info(known_answers[question])
+		# else:
+		# display info about entities
 		else:
-			answer = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
-		answer['question'] = query
-		json_string = json.dumps(answer)
+			answers = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
+		answers['question'] = query
+		json_string = json.dumps(answers)
 		self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
 		self.write(json_string)
-		
-class AskNowLogoutHandler(Handler):
-	def get(self):
-		self.reset_cookie('userid')
-		self.redirect(webapp2.uri_for('demo'))
-		
-class AskNowSignUpHandler(Handler):
-	def render_form(self, values = {}, errors = {}):
-		self.render('signup.html', values = values, errors = errors)
-	
-	def get(self):
-		self.render_form()
-	
-	def post(self):
-		username = self.request.get('username')
-		password = self.request.get('password')
-		verify = self.request.get('verify')
-		email = self.request.get('email')
-		if re.match('^[a-zA-Z0-9_-]{3,20}$', username) and username:
-			valid_username = True
-		else:
-			valid_username = False
-		if re.match('^.{3,20}$', password) and password:
-			valid_password = True
-		else:
-			valid_password = False
-		if password == verify:
-			valid_verify = True
-		else:
-			valid_verify = False
-		if re.match('^[\S]+@[\S]+.[\S]+$', email) or not email:
-			valid_email = True
-		else:
-			valid_email = False
-		query = AskNowUser.query(AskNowUser.username == username)
-		if query.count() > 0:
-			user_exists = True
-		else:
-			user_exists = False
-		if valid_username and valid_password and valid_verify and valid_email and not user_exists:
-			salt = self.generate_salt()
-			pwhash = self.generate_pwhash(password, salt)
-			newuser = AskNowUser(username = username, password = pwhash, salt = salt, email = email)
-			newkey = newuser.put()
-			newid = newkey.id()
-			self.response.headers.add_header('Set-Cookie', 'userid=%s|%s; Path=/' % (newid, self.hash_str(newid)))
-			self.redirect(webapp2.uri_for('demo'))
-		else:
-			values = {}
-			values['username'] = username
-			values['email'] = email
-			errors = {}
-			if not valid_username:
-				errors['username'] = 'Invalid username'
-			elif user_exists:
-				errors['username'] = 'This user exists already'
-			if not valid_password:
-				errors['password'] = 'Invalid password'
-			if not valid_verify:
-				errors['verify'] = 'Passwords do not match'
-			if not valid_email:
-				errors['email'] = 'Invalid email'
-			self.render_form(values = values, errors = errors)
-
-class AskNowLoginHandler(Handler):
-	def render_form(self, error = ''):
-		self.render('login.html', error = error)
-	
-	def get(self):
-		self.render_form()
-	
-	def post(self):
-		username = self.request.get('username')
-		password = self.request.get('password')
-		query = AskNowUser.query(AskNowUser.username == username)
-		user = query.get()
-		if username and query.count() > 0:
-			pwhash = user.password
-			salt = user.salt
-			if self.verify_password(pwhash, password, salt):
-				userid = user.key.id()
-				self.response.headers.add_header('Set-Cookie', 'userid=%s|%s; Path=/' % (userid, self.hash_str(userid)))
-				self.redirect(webapp2.uri_for('demo'))
-			else:
-				self.render_form(error = 'Invalid login')
-		else:
-			self.render_form(error = 'Invalid login')
 		
 
 PATH = '/asknow/'
