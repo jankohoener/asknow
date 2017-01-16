@@ -83,10 +83,10 @@ class AskNowDemoHandler(Handler):
 			return
 		if not auth and q:
 			logging.info('Anonymous user asked question %s, loading answer' % q)
-			answers = []
-			answers.append(self.retrieve_answers(q))
+			answerslist = []
+			answerslist.append(self.retrieve_answers(q))
 			logging.info('Answers loaded, rendering.')
-			self.render('asknowdemo_answer.html', answers = answers, q = q)
+			self.render('asknowdemo_answer.html', answerslist = answerslist, q = q)
 			return
 		# if auth:
 		qkey = 'questions-%s' % username
@@ -111,17 +111,19 @@ class AskNowDemoHandler(Handler):
 		display_questions = questions[:5]
 		memcache.set(qkey, display_questions)
 		logging.info('5 most recent questions added to cache, loading answers for questions.')
-		answers = []
+		answerslist = []
+		error = ''
+		message = ''
 		for question in display_questions:
 			cur_answers = self.retrieve_answer(question)
 			if cur_answers and not cur_answer.error:
-				answers.append(cur_answers)
+				answerslist.append(cur_answers)
 				logging.info('Retrieved answers for question "%s"' % question)
 			elif cur_answers and cur_answer.error and question == q:
 				error = cur_answer.error
 				message = cur_answer.message
 		logging.info('Rendering answer page.')
-		self.render('asknowdemo_answer.html', answers = answers, q = q, error = error, message = message) # FIXME: referenced before declared
+		self.render('asknowdemo_answer.html', answerslist = answerslist, q = q, error = error, message = message)
 			
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
@@ -156,8 +158,15 @@ class AskNowJSONAnswerHandler(Handler):
 			answer['wplink'] = json_data['query']['pages'][pageid]['fullurl']
 			answer['imgsrc'] = json_data['query']['pages'][pageid]['thumbnail']['original']
 			answers['answers'].append(answer)
+		answers['count'] = len(answers['answers'])
 		return answers
 	
+	
+	"""
+	Returns an object that contains the 
+	
+	
+	"""
 	def get(self):
 		known_answers = {
 			'who is the president of the united states': ['Barack Obama'],
