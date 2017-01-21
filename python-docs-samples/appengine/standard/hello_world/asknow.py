@@ -16,13 +16,14 @@
 
 #import webapp2
 import json
-import urllib
 from google.appengine.api import urlfetch
 from google.appengine.api import memcache
 import logging
 from handlerlib import *
 from datatypes import *
 from userauth import *
+import urllib, urllib2
+from urllib2 import Request
 		
 class AskNowDemoHandler(Handler):
 	def retrieve_answers(self, q): # FIXME
@@ -30,7 +31,7 @@ class AskNowDemoHandler(Handler):
 		cur_answer = {}
 		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params)
 		try:
-			result = urlfetch.fetch(url)
+			result = urlfetch.fetch(url) # FIXME: change to use urllib for consistency
 			if result.status_code == 200:
 				cur_answer = json.loads(result.content)
 				return cur_answer
@@ -128,6 +129,7 @@ class AskNowDemoHandler(Handler):
 			
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
+	DBPEDIA_URL = 'http://www.dbpedia-spotlight.com/en/annotate'
 
 	def retrieve_info(self, titles):
 		answers = {}
@@ -148,7 +150,7 @@ class AskNowJSONAnswerHandler(Handler):
 		while True:
 			params = urllib.urlencode(req)
 			url = self.API_URL + '?' + params
-			urlobj = urllib.urlopen(url)
+			urlobj = urllib2.urlopen(url)
 			json_data = json.load(urlobj)
 			if json_data.get('error'):
 				answer['error'] = 3
@@ -202,10 +204,18 @@ class AskNowJSONAnswerHandler(Handler):
 			answers = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
 		elif question in known_answers:
 			answers = self.retrieve_info(known_answers[question])
-		# else:
-		# display info about entities
 		else:
-			answers = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
+			param = {}
+			param['text'] = query
+			param['confidence'] = 0.75
+			params = urllib.urlencode(param)
+			url = self.DBPEDIA_URL + '?' + params
+			req = Request(url)
+			req.add_header('Accept', 'application/json')
+			a = urllib2.urlopen(req).read()
+			self.write(a)
+		#else:
+		#	answers = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
 		answers['question'] = query
 		json_string = json.dumps(answers)
 		self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'

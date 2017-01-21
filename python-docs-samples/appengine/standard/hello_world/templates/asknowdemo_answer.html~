@@ -2,17 +2,14 @@
 
 {% block answer %}
 	{% for answers in answerslist %}
-		{% if answers['count'] == 1 }
-		<p class="answer">The answer to your question "{{answers.question}}" is: <b>{{answers.title[0]}}</b></p><!-- FIXME: {{answer.title}} -->
+		{% if answers['count'] == 1 %}
+		<p class="answer">The answer to your question "{{answers.question}}" is: <b>{{answers.titles[0]}}</b></p>
 		{% else %}
-		<p class="answers">The answers to your question "{{answers.question}} are:
-			{% for answer in answers.answers %} <!-- FIXME: needs nasty logic to do this -->
-			
-			{% endfor %}
+		<p class="answers">The answers to your question "{{answers.question}}" are: {{answers.titles|joinfunc('<b>%s</b>')|safe}}
 		</p>
 		{% endif %}
 		<br>
-		{% for answer in answers.answers %} <!-- FIXME -->
+		{% for answer in answers.information %}
 			<div class="information">
 			<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
 			{{answer.abstract | safe}}

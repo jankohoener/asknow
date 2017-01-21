@@ -2,12 +2,14 @@
 
 {% block answer %}
 	{% for answers in answerslist %}
+		<p class="answers">
 		{% if answers['count'] == 1 %}
-		<p class="answer">The answer to your question "{{answers.question}}" is: {{answers.titles|joinfunc('<b>%s</b>')|safe}}</p>
+		The answer to your question "{{answers.question}}" is:
 		{% else %}
-		<p class="answers">The answers to your question "{{answers.question}}" are: {{answers.titles|joinfunc('<b>%s</b>')|safe}}
-		</p>
+		The answers to your question "{{answers.question}}" are:
 		{% endif %}
+		{{answers.titles|joinfunc('<b>%s</b>')|safe}}
+		</p>
 		<br>
 		{% for answer in answers.information %}
 			<div class="information">

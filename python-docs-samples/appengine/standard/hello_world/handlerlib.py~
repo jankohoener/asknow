@@ -3,11 +3,19 @@ import os
 import jinja2
 import hashlib, uuid
 
+def joinfunc(array, wrapper):
+	wrap_array = [wrapper % x for x in array]
+	a = []
+	a.append(', '.join(wrap_array[0:-1]))
+	a.append(wrap_array[-1])
+	return ' and '.join(a)
+
 class Handler(webapp2.RequestHandler):
 	template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 	
 	jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), 
 	autoescape = True)
+	jinja_env.filters['joinfunc'] = joinfunc
 	
 	SECRET = "The AskNow secret"
 	

@@ -6,8 +6,10 @@ import hashlib, uuid
 def joinfunc(array, wrapper):
 	wrap_array = [wrapper % x for x in array]
 	a = []
-	a.append(', '.join(wrap_array[0:-1]))
-	a.append(wrap_array[-1])
+	if ', '.join(wrap_array[0:-1]):
+		a.append(', '.join(wrap_array[0:-1]))
+	if wrap_array[-1]:
+		a.append(wrap_array[-1])
 	return ' and '.join(a)
 
 class Handler(webapp2.RequestHandler):

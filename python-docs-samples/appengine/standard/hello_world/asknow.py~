@@ -86,6 +86,7 @@ class AskNowDemoHandler(Handler):
 			answerslist = []
 			answerslist.append(self.retrieve_answers(q))
 			logging.info('Answers loaded, rendering.')
+			logging.info(answerslist)
 			self.render('asknowdemo_answer.html', answerslist = answerslist, q = q)
 			return
 		# if auth:
@@ -115,8 +116,8 @@ class AskNowDemoHandler(Handler):
 		error = ''
 		message = ''
 		for question in display_questions:
-			cur_answers = self.retrieve_answer(question)
-			if cur_answers and not cur_answer.error:
+			cur_answers = self.retrieve_answers(question)
+			if cur_answers and not cur_answers.get('error'):
 				answerslist.append(cur_answers)
 				logging.info('Retrieved answers for question "%s"' % question)
 			elif cur_answers and cur_answer.error and question == q:
@@ -130,20 +131,21 @@ class AskNowJSONAnswerHandler(Handler):
 
 	def retrieve_info(self, titles):
 		answers = {}
-		answers['answers'] = []
-		for title in titles:
-			answer = {}
-			answer['title'] = title
-			req = {}
-			req['action'] = 'query'
-			req['prop'] = 'info|pageimages|extracts'
-			req['titles'] = title
-			req['inprop'] = 'url'
-			req['piprop'] = 'original'
-			req['exintro'] = True
-			req['exsectionformat'] = 'raw'
-			req['format'] = 'json'
-			req['indexpageids'] = True
+		answers['information'] = []
+		answers['titles'] = []
+		req = {}
+		answer = {}
+		req['action'] = 'query'
+		req['prop'] = 'info|pageimages|extracts'
+		req['titles'] = '|'.join(titles)
+		req['inprop'] = 'url'
+		req['piprop'] = 'original'
+		req['exintro'] = True
+		req['exsectionformat'] = 'raw'
+		req['format'] = 'json'
+		req['indexpageids'] = True
+		req['redirects'] = True
+		while True:
 			params = urllib.urlencode(req)
 			url = self.API_URL + '?' + params
 			urlobj = urllib.urlopen(url)
@@ -151,14 +153,28 @@ class AskNowJSONAnswerHandler(Handler):
 			if json_data.get('error'):
 				answer['error'] = 3
 				answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
-				answers['answers'].append(answer)
+				answers['information'].append(answer)
 				continue
-			pageid = json_data['query']['pageids'][0]
-			answer['abstract'] = json_data['query']['pages'][pageid]['extract']
-			answer['wplink'] = json_data['query']['pages'][pageid]['fullurl']
-			answer['imgsrc'] = json_data['query']['pages'][pageid]['thumbnail']['original']
-			answers['answers'].append(answer)
-		answers['count'] = len(answers['answers'])
+			pageids = json_data['query']['pageids']
+			for pageid, info in json_data['query']['pages'].items():
+				if not answer.get(pageid):
+					answer[pageid] = {}
+				if info.get('title'):
+					answer[pageid]['title'] = info['title']
+					if info['title'] not in answers['titles']:
+						answers['titles'].append(info['title'])
+				if info.get('extract'):
+					answer[pageid]['abstract'] = info['extract']
+				if info.get('fullurl'):
+					answer[pageid]['wplink'] = info['fullurl']
+				if info.get('thumbnail'):
+					answer[pageid]['imgsrc'] = info['thumbnail']['original']
+			if json_data.get('continue'):
+				req.update(json_data['continue'])
+			if json_data.get('batchcomplete') == '':
+				break
+		answers['information'] = answer.values()
+		answers['count'] = len(answers['information'])
 		return answers
 	
 	
@@ -174,7 +190,9 @@ class AskNowJSONAnswerHandler(Handler):
 			'in which city was beethoven born': ['Bonn'],
 			'in which city was adenauer born': ['Cologne'],
 			'what country is shah rukh khan from': ['India'],
-			'what are the capitals of germany and india': ['Berlin', 'New Delhi']
+			'what are the capitals of germany and india': ['Berlin', 'New Delhi'],
+			'what are the capitals of germany, india and usa': ['Berlin', 'New Delhi', 'Washington D.C.'],
+			'what are the capitals of germany, india, usa and france': ['Berlin', 'New Delhi', 'Washington D.C.', 'Paris']
 		}
 		query = self.request.get('q')
 		question = self.request.get('q')
