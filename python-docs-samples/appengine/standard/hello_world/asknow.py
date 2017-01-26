@@ -24,6 +24,7 @@ from datatypes import *
 from userauth import *
 import urllib, urllib2
 from urllib2 import Request
+import os
 		
 class AskNowDemoHandler(Handler):
 	def retrieve_answers(self, q): # FIXME
@@ -129,7 +130,7 @@ class AskNowDemoHandler(Handler):
 			
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
-	DBPEDIA_URL = 'http://www.dbpedia-spotlight.com/en/annotate'
+	DBPEDIASL_URL = 'http://www.dbpedia-spotlight.com/en/annotate'
 
 	def retrieve_info(self, titles):
 		answers = {}
@@ -204,16 +205,25 @@ class AskNowJSONAnswerHandler(Handler):
 			answers = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
 		elif question in known_answers:
 			answers = self.retrieve_info(known_answers[question])
+			answers['answered'] = True
 		else:
 			param = {}
 			param['text'] = query
-			param['confidence'] = 0.75
+			param['confidence'] = 0.75 # FIXME: set to another value
 			params = urllib.urlencode(param)
-			url = self.DBPEDIA_URL + '?' + params
+			url = self.DBPEDIASL_URL + '?' + params
 			req = Request(url)
 			req.add_header('Accept', 'application/json')
 			a = urllib2.urlopen(req).read()
-			self.write(a)
+			entityobj = json.loads(a)
+			if entityobj.get('Resources'):
+				titles = []
+				for entity in entityobj['Resources']:
+					if entity.get('@URI'):
+						titles.append(os.path.basename(entity['@URI']))
+				if titles:
+					answers = self.retrieve_info(titles)
+					answers['answered'] = False
 		#else:
 		#	answers = { 'error': 1, 'message': 'AskNow does not know the answer to this question.' }
 		answers['question'] = query
