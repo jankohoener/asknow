@@ -1,0 +1,4 @@
+upper flammable limit
+UEL
+UFL
+upper explosive limit

@@ -1,0 +1,2 @@
+UMLS CUI
+Unified Medical Language System controlled unique identifier

@@ -1,0 +1,3 @@
+CPDL ID
+Choral Public Domain Library ID
+ChoralWiki ID

@@ -1,0 +1,8 @@
+image
+Commons image
+drawing
+illustration
+photo
+picture
+portrait
+screenshot

@@ -1,0 +1,5 @@
+number of seats
+membership quantity
+number of seats (members)
+quantity of members
+seats (members)

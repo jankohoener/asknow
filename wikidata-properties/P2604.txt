@@ -1,0 +1,2 @@
+Kinopoisk person ID
+Kinopoisk actor ID

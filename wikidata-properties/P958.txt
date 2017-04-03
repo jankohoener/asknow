@@ -1,0 +1,9 @@
+section, verse, or paragraph
+bibliography
+dictionary entry
+encyclopedia entry
+entry
+paragraph
+section
+title (of a section)
+verse

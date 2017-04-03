@@ -1,0 +1,4 @@
+edition(s)
+editions
+has edition
+translation(s)

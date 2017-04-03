@@ -1,0 +1,4 @@
+open days
+days open
+open on days
+opening days

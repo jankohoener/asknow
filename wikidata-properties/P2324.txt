@@ -1,0 +1,3 @@
+quantity buried
+burials
+number of people buried

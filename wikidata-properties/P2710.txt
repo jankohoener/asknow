@@ -1,0 +1,3 @@
+minimal lethal concentration
+LCLo
+lowest lethal concentration

@@ -1,0 +1,9 @@
+distance from Earth
+angular diameter distance
+comoving distance
+comoving distance
+light-travel distance
+luminosity distance
+luminosity distance
+proper distance
+proper distance

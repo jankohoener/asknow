@@ -1,0 +1,4 @@
+platform
+computing platform
+game platform
+platforms

@@ -1,0 +1,12 @@
+via
+via
+called at
+calling at
+calling point
+intermediate point
+journey stopover
+journey via
+route via
+routing point
+stopover
+waystation

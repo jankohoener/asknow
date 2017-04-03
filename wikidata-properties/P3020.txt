@@ -1,0 +1,6 @@
+residence time of water
+lake residence time
+lake retention time
+retention time
+water residence time
+water retention time

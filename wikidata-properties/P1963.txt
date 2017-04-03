@@ -1,0 +1,4 @@
+properties for this type
+has property
+requires property
+uses property

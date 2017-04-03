@@ -1,0 +1,3 @@
+payment types accepted
+credit cards accepted
+payment methods accepted

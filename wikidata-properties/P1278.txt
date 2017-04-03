@@ -1,0 +1,7 @@
+Legal Entity ID
+Legal Entity ID
+Global Legal Entity Identifier
+ISO 17442 code
+Legal Entity Identifier
+Legal Entity Identifier
+LEI

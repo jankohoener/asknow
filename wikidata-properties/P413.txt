@@ -1,0 +1,6 @@
+position played on team / speciality
+fielding position
+player position
+position (on team)
+specialism
+speciality

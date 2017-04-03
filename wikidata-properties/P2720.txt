@@ -1,0 +1,4 @@
+embed URL template
+embed URL pattern
+formatter URL for embed
+URL template for embed

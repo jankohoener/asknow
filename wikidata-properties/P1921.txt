@@ -1,0 +1,6 @@
+RDF URI template
+RDF URI template
+formatter URL for RDF resource
+RDF URL pattern
+URI pattern for RDF resource
+URL template for RDF resource

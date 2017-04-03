@@ -1,0 +1,4 @@
+frequency of event
+event frequency
+frequency of occurence
+occurence frequency

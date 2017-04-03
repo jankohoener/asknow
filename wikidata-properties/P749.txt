@@ -1,0 +1,12 @@
+parent organization
+holding
+holding company
+owned by (company or organisation)
+owned by (company or organisation)
+owned by (company or organization)
+owned by (company or organization)
+parent company
+parent organisation
+parent organisation
+part of
+subsidiary of

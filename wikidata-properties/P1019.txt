@@ -1,0 +1,3 @@
+feed URL
+atom feed
+RSS

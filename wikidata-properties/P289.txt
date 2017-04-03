@@ -1,0 +1,5 @@
+vessel class
+class of vessel
+ship class
+spacecraft class
+submarine class

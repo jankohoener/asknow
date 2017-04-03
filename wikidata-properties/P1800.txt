@@ -1,0 +1,4 @@
+Wikimedia database name
+siteid
+Wikimedia dbname/siteid
+Wikimedia siteid

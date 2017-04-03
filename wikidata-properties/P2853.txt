@@ -1,0 +1,8 @@
+electrical plug type
+electrical connector type
+electrical socket type
+mains connector
+mains plug type
+mains socket type
+plug type
+socket type

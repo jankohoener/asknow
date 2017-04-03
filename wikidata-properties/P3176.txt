@@ -1,0 +1,7 @@
+uses property
+analyzes property
+analyzes Wikidata property
+discusses property
+discusses Wikidata property
+property used
+property Wikidata used

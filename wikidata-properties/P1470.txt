@@ -1,0 +1,3 @@
+maximum glide ratio
+best L/D-ratio
+best lift/drag ratio

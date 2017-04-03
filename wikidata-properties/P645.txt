@@ -1,0 +1,6 @@
+genomic end
+Genloc End
+Genloc Stop
+genomic stop
+stop
+stop coordinate

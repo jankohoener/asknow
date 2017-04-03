@@ -1,0 +1,3 @@
+minimum date
+earliest date
+min date

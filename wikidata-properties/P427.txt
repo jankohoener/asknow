@@ -1,0 +1,3 @@
+taxonomic type
+type genus
+type species

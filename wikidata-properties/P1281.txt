@@ -1,0 +1,5 @@
+WOEID
+Flickr location ID
+GeoPlanet location ID
+Where On Earth Identifier
+woe_id

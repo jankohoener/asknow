@@ -1,0 +1,6 @@
+power output
+capacity
+generating capacity
+nameplate capacity
+power capacity
+rated power

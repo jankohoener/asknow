@@ -1,0 +1,3 @@
+depicts Iconclass notation
+Iconclass ID (of artwork)
+Iconclass notation (of artwork)

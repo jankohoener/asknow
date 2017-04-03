@@ -1,0 +1,3 @@
+FSB speed
+bus speed
+front-side bus speed

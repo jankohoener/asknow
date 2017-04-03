@@ -1,0 +1,3 @@
+external superproperty
+subproperty of (external)
+subproperty of external property

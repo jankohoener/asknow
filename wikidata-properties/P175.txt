@@ -1,0 +1,7 @@
+performer
+band
+group
+music group
+musical artist
+musician
+singer

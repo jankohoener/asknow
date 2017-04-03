@@ -1,0 +1,29 @@
+instance of
+distinct element of
+distinct individual member of
+distinct individual member of
+distinct member of
+has class
+has type
+is a
+is a particular
+is a specific
+is a specific
+is a unique
+is an
+is an example of
+is an individual
+member of
+non-type member of
+not a type but is instance of
+occurrence of
+uninstantiable instance of
+uninstantiable instance of
+unique individual of
+unitary element of class
+unsubclassable example of
+unsubclassable example of
+unsubclassifiable member of
+unsubclassifiable member of
+unsubtypable particular
+∈

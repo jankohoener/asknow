@@ -1,0 +1,4 @@
+ICAO airport code
+ICAO aerodrome code
+ICAO airfield code
+International Civil Aviation Organization airport code

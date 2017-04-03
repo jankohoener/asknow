@@ -1,0 +1,3 @@
+equivalent property
+ontological equivalent
+owl:equivalentProperty

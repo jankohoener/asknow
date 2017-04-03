@@ -1,0 +1,4 @@
+pennant number
+hull classification symbol
+hull number
+pendant number

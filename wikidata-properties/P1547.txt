@@ -1,0 +1,8 @@
+depends on software
+dependency
+interfaces with
+requires
+runs on
+runs on
+software dependency
+software framework

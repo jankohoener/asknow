@@ -1,0 +1,4 @@
+CN
+GAPP Identifier
+SAPPRFT Id.
+SAPPRFT Identified

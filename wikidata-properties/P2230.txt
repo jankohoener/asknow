@@ -1,0 +1,3 @@
+torque
+moment
+moment of force

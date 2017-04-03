@@ -1,0 +1,4 @@
+literal translation
+direct translation
+translation (literal)
+word-for-word translation

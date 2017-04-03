@@ -1,0 +1,7 @@
+professorship
+chair
+endowed chair
+endowed professorship
+named chair
+named professorship
+professorship position

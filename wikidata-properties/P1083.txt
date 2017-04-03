@@ -1,0 +1,5 @@
+maximum capacity
+capacity
+number of seats
+seating capacity
+seats

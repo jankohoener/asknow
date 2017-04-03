@@ -1,0 +1,8 @@
+graphic symbol of thoroughfare
+highway marker
+highway shield
+motorway sign
+road marker
+route marker
+shield
+trail blaze

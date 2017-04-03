@@ -1,0 +1,6 @@
+genomic start
+from
+Genloc From
+Genloc Start
+genomic from
+start coordinate

@@ -1,0 +1,2 @@
+Google Knowledge Graph identifier
+KG MID

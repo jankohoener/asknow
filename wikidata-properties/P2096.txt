@@ -1,0 +1,13 @@
+media legend
+audio caption
+audio description
+audio legend
+caption
+image description
+image legend
+legend
+media caption
+media description
+video caption
+video description
+video legend

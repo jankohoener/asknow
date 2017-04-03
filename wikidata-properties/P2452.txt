@@ -1,0 +1,2 @@
+GeoNames feature code
+feature code (GeoNames)

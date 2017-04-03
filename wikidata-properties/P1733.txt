@@ -1,0 +1,2 @@
+Steam Application ID
+steampowered.com ID

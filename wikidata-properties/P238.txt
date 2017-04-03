@@ -1,0 +1,3 @@
+IATA airport code
+International Air Transport Association airport code
+uio

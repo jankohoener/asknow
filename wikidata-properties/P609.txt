@@ -1,0 +1,6 @@
+terminus location
+between
+departure point
+destination
+from
+to

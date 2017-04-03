@@ -1,0 +1,3 @@
+median lethal concentration
+LC50
+LC₅₀

@@ -1,0 +1,5 @@
+inventory number
+accession number
+call number
+reference
+shelfmark

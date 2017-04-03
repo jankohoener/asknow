@@ -1,0 +1,3 @@
+Artsy artist ID
+Artsy artist identifier
+Artsy id

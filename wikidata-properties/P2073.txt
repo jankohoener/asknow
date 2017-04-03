@@ -1,0 +1,4 @@
+vehicle range
+maximum range
+operational range
+range

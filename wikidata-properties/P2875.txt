@@ -1,0 +1,4 @@
+property usage tracking category
+property usage tracking category
+property tracked (inverse of)
+property tracked (inverse of)

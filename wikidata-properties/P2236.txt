@@ -1,0 +1,4 @@
+external subproperty
+subproperty (external)
+subproperty of external property
+subproperty of external property

@@ -1,0 +1,7 @@
+quantity
+amount
+number
+number of instances
+qty
+total
+total number

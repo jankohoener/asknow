@@ -1,0 +1,4 @@
+COSPAR ID
+COSPAR designation
+International Designator
+NSSDC ID

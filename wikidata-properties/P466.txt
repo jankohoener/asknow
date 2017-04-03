@@ -1,0 +1,4 @@
+occupant
+inhabitant
+occupied by
+tenant

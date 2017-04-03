@@ -1,0 +1,2 @@
+CWE ID
+Common Weakness Enumeration ID

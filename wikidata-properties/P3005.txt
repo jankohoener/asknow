@@ -1,0 +1,5 @@
+valid in place
+applies to location
+applies to place
+applies to place
+valid in location

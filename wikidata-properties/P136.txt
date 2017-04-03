@@ -1,0 +1,6 @@
+genre
+artistic genre
+film genre
+kind of music
+literary genre
+music genre

@@ -1,0 +1,13 @@
+MusicBrainz work ID
+MBID work
+MBID work
+MusicBrainz work MBID
+MusicBrainz work MBID
+song ID
+song ID
+song MBID
+song MBID
+work ID
+work ID
+work MBID
+work MBID

@@ -1,0 +1,3 @@
+number of spans
+number of arches of a bridge
+spans

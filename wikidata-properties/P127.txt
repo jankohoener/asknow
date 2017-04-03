@@ -1,0 +1,6 @@
+owned by
+belongs to
+is owned by
+owner
+shareholder
+stockholder

@@ -1,0 +1,2 @@
+Minor Planet Center observatory code
+IAU code

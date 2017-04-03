@@ -1,0 +1,6 @@
+Aviation Safety Network accident ID
+Aviation Safety Network accident ID
+ASN accident ID
+ASNADID
+ASNID
+Aviation Safety Network accident description ID

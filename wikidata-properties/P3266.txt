@@ -1,0 +1,4 @@
+LocFDD ID
+FDD ID
+Library of Congress FDD ID
+Library of Congress Format Description Document ID

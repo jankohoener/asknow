@@ -1,0 +1,6 @@
+Cycling Quotient ID (cyclist, man)
+CQID (cyclist, man)
+CQR
+CQRanking
+Cycling Quotient (cyclist, man) identifier
+Cycling Quotient identifier (cyclist, man)

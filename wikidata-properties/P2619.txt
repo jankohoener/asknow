@@ -1,0 +1,4 @@
+Hungarian company ID
+Hungarian company number
+Hungarian company register ID
+Hungarian company register number

@@ -1,0 +1,4 @@
+base salary
+gross salary
+gross wage
+wage

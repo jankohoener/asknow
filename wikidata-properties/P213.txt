@@ -1,0 +1,3 @@
+ISNI
+International Standard Name Identifier
+ISO 27729

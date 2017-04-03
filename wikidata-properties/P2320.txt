@@ -1,0 +1,3 @@
+aftershocks
+number of aftershocks
+quantity of aftershocks

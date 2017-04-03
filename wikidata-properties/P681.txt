@@ -1,0 +1,2 @@
+cell component
+subcellular localization

@@ -1,0 +1,9 @@
+MusicBrainz artist ID
+MusicBrainz artist ID
+artist ID
+artist MBID
+artist MBID
+BBC Music artist ID
+BBC Music artist ID
+MBID artist
+MBID artist

@@ -1,0 +1,4 @@
+constraint status
+constraint status
+mandatory constraint status
+status of constraint

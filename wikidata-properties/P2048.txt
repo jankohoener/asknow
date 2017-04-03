@@ -1,0 +1,4 @@
+height
+height
+depth over terrain
+size

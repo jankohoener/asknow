@@ -1,0 +1,4 @@
+time signature
+measure signature
+meter signature
+metre signature

@@ -1,0 +1,5 @@
+GNS Unique Feature ID
+GEOnet Names Server Unique Feature
+GNS UFI
+GNS Unique Feature Identifier
+Unique Feature Identifier

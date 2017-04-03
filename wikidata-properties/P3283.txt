@@ -1,0 +1,5 @@
+Bandcamp artist ID
+Bandcamp band ID
+Bandcamp group ID
+Bandcamp label ID
+Bandcamp person ID

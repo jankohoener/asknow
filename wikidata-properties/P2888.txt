@@ -1,0 +1,5 @@
+exact match
+same as
+sameas
+skos:exactMatch
+the same as

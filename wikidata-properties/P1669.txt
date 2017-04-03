@@ -1,0 +1,4 @@
+CONA ID
+CONA identifier
+Cultural Objects Names Authority ID
+Cultural Objects Names Authority identifier

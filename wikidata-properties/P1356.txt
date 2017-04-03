@@ -1,0 +1,8 @@
+losses
+defeats
+games lost
+L
+lost
+match losses
+matches lost
+matches lost/games lost

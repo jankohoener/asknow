@@ -1,0 +1,14 @@
+has parts of the class
+composition has pieces that are
+constitutent(s) are classified as
+has part(s) forming subclass of
+has part(s) that are instances of
+has part(s) that are instances of
+has parts(P527): instances(P31)of
+is assemblage with parts that are
+is built/made with example(s) of
+is constructed with members of
+of subcomponents whose class is
+parts of(P361) subject are some
+some parts form subclass(P279)of
+some parts form subclass(P279)of

@@ -1,0 +1,11 @@
+MusicBrainz release group ID
+album ID
+album MBID
+EP ID
+EP MBID
+MBID release group
+MusicBrainz album
+release group ID
+release group MBID
+single ID
+single MBID

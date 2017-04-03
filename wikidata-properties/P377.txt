@@ -1,0 +1,5 @@
+SCN
+NASA catalog number
+NORAD Catalog Number
+Satellite Catalog Number
+USSPACECOM object number

@@ -1,0 +1,22 @@
+subclass of
+has superclass
+hyponym of
+is a category of
+is a category of
+is a subset of
+is a subtype of
+is a subtype of
+is also a
+is necessarily also a
+is thereby also a
+rdfs:subClassOf
+subcategory of
+subcategory of
+subset of
+subtype of
+subtype of
+whose instances are among
+whose instances are among
+whose instances ⊆ those of
+⊂
+⊆

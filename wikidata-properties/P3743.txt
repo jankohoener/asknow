@@ -1,0 +1,10 @@
+ITU/ISO/IEC object identifier
+IEC object identifier
+IEC OID
+ISO object identifier
+ISO OID
+ITU object identifier
+ITU OID
+ITU/ISO/IEC OID
+object identifier
+OID

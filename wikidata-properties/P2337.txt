@@ -1,0 +1,3 @@
+SFDb group ID
+SFDb group identifier
+SFDb-identifier of group

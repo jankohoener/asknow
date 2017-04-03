@@ -1,0 +1,4 @@
+explosive velocity
+detonation velocity
+velocity of detonation
+VoD

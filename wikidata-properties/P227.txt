@@ -1,0 +1,8 @@
+GND ID
+dbpedia:IndividualisedGnd
+DNB authorities
+GND
+GND identifier
+Integrated Authority File
+PND
+Universal Authority File

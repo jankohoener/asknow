@@ -1,0 +1,3 @@
+FIPS 5-2 (code for US states)
+FIPS 5-2
+FIPS code for US states

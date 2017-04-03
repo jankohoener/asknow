@@ -1,0 +1,22 @@
+contains administrative territorial entity
+contains administrative territorial entity
+contains
+divided into
+divides into
+has administrative divisions
+has administrative divisions
+has arrondissements
+has arrondissements
+has boroughs
+has cities
+has counties
+has districts
+has local government areas
+has municipalities
+has rural cities
+has shires
+has towns
+has villages
+has villages
+has wards
+subdivided into

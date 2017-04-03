@@ -1,0 +1,2 @@
+has facet polytope
+facet of a polytope

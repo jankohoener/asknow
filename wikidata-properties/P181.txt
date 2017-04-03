@@ -1,0 +1,3 @@
+taxon range map image
+distribution map (taxa)
+spread map

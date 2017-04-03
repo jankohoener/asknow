@@ -1,0 +1,3 @@
+Kinopoisk film ID
+Kinopoisk movie ID
+Kinopoisk video ID

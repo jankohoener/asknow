@@ -1,0 +1,2 @@
+ISFDB author ID
+Internet Speculative Fiction Database author ID

@@ -1,0 +1,4 @@
+Unicode character
+Unicode code point
+Unicode symbol
+Unicode symbol

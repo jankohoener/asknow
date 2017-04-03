@@ -1,0 +1,3 @@
+cardinality of the group
+group order
+group size

@@ -1,0 +1,5 @@
+HNI person/institution ID
+HNI institution ID
+HNI institution identifier
+HNI person ID
+HNI person identifier

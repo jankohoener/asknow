@@ -1,0 +1,6 @@
+EU Surface Water Body Code
+EU_CD
+Surface Water Body Code
+SurfaceWaterBodyCode
+Water Framework Directive Waterbody ID
+WFD Waterbody ID

@@ -1,0 +1,7 @@
+argument of periapsis
+argument of periastron
+argument of pericenter
+argument of perifocus
+argument of perigee
+argument of perihelion
+ω

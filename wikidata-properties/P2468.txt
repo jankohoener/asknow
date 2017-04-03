@@ -1,0 +1,4 @@
+Theatricalia theatre ID
+Theatricalia ID (theatre)
+Theatricalia place ID
+Theatricalia venue ID

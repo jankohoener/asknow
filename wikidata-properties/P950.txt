@@ -1,0 +1,4 @@
+BNE ID
+BNE ID
+Biblioteca Nacional de España ID
+BNE identifier

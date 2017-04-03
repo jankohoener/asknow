@@ -1,0 +1,10 @@
+series ordinal
+article
+comma
+number
+order
+ordinal number
+position in series
+rank
+series number
+sorting order

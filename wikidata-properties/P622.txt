@@ -1,0 +1,5 @@
+spacecraft docking/undocking date
+spacecraft docking/undocking date
+docking date
+time of spacecraft docking/undocking
+undocking date

@@ -1,0 +1,3 @@
+Database of Classical Scholars ID
+Database of Classical Scholars identifier
+DBCS identifier

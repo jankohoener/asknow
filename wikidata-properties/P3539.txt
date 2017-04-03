@@ -1,0 +1,3 @@
+NFL.com ID
+National Football League player ID
+NFL ID

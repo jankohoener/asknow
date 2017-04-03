@@ -1,0 +1,8 @@
+number of wins
+games won
+match victories
+matches won
+sporting wins
+victories
+W
+won

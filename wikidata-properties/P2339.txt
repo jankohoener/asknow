@@ -1,0 +1,2 @@
+BoardGameGeek ID
+BGG ID

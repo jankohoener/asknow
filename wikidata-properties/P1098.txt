@@ -1,0 +1,2 @@
+number of speakers
+speakers of language

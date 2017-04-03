@@ -1,0 +1,4 @@
+cost of damage
+amount of damage
+damage
+value of damage

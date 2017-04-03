@@ -1,0 +1,4 @@
+Transfermarkt manager ID
+transfermarkt coach id
+transfermarkt id (coach)
+transfermarkt id (manager)

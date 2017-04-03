@@ -1,0 +1,3 @@
+Kulturminne ID
+Kulturminne identifier
+Lokalitets ID

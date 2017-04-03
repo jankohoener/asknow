@@ -1,0 +1,3 @@
+number of graves
+capacity cemetery
+total number of graves

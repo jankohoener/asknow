@@ -1,0 +1,9 @@
+precipitation height
+amount of precipitation
+amount of rain
+amount of snow
+precipitation amount
+rain amount
+snow accumulation
+snow amount
+snow height

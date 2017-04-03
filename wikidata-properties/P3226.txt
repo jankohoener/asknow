@@ -1,0 +1,2 @@
+HAS member ID
+MTA member ID

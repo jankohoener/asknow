@@ -1,0 +1,3 @@
+MusicBrainz series ID
+Series ID
+Series MBID

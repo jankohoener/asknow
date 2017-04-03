@@ -1,0 +1,9 @@
+located on terrain feature
+is in
+is on
+island
+loc (terr)
+location (terrain feature)
+on geographical feature
+on natural feature
+takes place in

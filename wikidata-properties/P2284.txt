@@ -1,0 +1,7 @@
+price
+cost
+exchange rate
+list price
+MSRP
+published price
+purchase price

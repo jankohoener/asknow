@@ -1,0 +1,3 @@
+GNIS ID
+Geographic Names Information System ID
+USGS GNIS ID

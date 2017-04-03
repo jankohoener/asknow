@@ -1,0 +1,5 @@
+adjacent station
+neighbouring station
+next station
+next stop
+previous station

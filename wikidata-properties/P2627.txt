@@ -1,0 +1,14 @@
+ISO 9362 SWIFT/BIC code
+BEI
+BEI
+BIC code
+Business Entity Identifier
+Business Entity Identifier
+Business Identifier Codes
+Business Identifier Codes
+ISO 9362
+SWIFT code
+SWIFT ID
+SWIFT ID
+SWIFT-BIC
+SWIFT-BIC

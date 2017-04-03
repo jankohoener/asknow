@@ -1,0 +1,3 @@
+median lethal dose
+LD50
+LD₅₀

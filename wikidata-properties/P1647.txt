@@ -1,0 +1,9 @@
+subproperty of
+subproperty of
+has parent property
+instance of property
+parent property
+rdfs:subPropertyOf
+subclass of property
+subPropertyOf
+superproperty

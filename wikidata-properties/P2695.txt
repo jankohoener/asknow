@@ -1,0 +1,4 @@
+type locality
+type locality
+(co)-type locality
+(co)-type locality

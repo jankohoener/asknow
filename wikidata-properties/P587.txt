@@ -1,0 +1,6 @@
+MMSI
+MarineTraffic ID
+MarineTraffic Ship ID
+Maritime Mobile Service Identity
+MMSI Number
+MMSI number

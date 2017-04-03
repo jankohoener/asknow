@@ -1,0 +1,3 @@
+Adult Film Database person ID
+Adult Film Database actor ID
+Adult Film Database director ID

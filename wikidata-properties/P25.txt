@@ -1,0 +1,11 @@
+mother
+mother
+has mother
+is child of
+is daughter of
+is son of
+mam
+mom
+mum
+parent
+parent

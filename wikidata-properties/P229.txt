@@ -1,0 +1,3 @@
+IATA airline designator
+IATA reservation code
+International Air Transport Association airline designator

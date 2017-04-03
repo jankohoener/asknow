@@ -1,0 +1,2 @@
+EC classification
+Enzyme Commission classification name

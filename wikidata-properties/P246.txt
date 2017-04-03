@@ -1,0 +1,4 @@
+element symbol
+chemical symbol
+formula
+formula

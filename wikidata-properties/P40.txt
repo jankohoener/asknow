@@ -1,0 +1,16 @@
+child
+children
+daughter
+daughters
+has child
+has children
+has daughter
+has daughters
+has kid
+has kids
+has son
+has sons
+kid
+kids
+son
+sons

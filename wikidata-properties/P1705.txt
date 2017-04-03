@@ -1,0 +1,5 @@
+native label
+label in official language
+label in original language
+name in official language
+name in original language

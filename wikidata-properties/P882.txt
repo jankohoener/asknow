@@ -1,0 +1,4 @@
+FIPS 6-4 (US counties)
+FIPS 6-4
+FIPS US counties
+INCITS 31-2009

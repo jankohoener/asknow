@@ -1,0 +1,2 @@
+territory overlaps
+partially contains territorial extent

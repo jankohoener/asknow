@@ -1,0 +1,8 @@
+NCES District ID
+district ID (NCES)
+LEAID
+local education agency ID
+regional education agency ID
+school district ID (NCES)
+SEAID
+state education agency ID

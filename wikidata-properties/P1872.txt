@@ -1,0 +1,3 @@
+minimum number of players
+number of players, minimum
+players, minimum number

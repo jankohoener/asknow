@@ -1,0 +1,3 @@
+thermal design power
+thermal design power
+TDP

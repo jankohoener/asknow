@@ -1,0 +1,2 @@
+INEGI locality ID
+INEGI locality identifier

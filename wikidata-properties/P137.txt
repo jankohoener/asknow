@@ -1,0 +1,8 @@
+operator
+administrator
+facility operator
+item operator
+managed by
+operated by
+service operator
+user

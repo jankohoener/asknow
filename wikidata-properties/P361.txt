@@ -1,0 +1,14 @@
+part of
+assembly of
+contained within
+merged into
+merged with
+merged with
+meronym of
+part of-property
+part of-property
+section of
+subassembly of
+subsystem of
+system of
+within a set

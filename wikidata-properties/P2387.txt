@@ -1,0 +1,3 @@
+Elonet person ID
+Elonet actor ID
+Elonet artist ID

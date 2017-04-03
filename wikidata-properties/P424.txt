@@ -1,0 +1,5 @@
+Wikimedia language code
+Wikimedia language code
+language code
+MediaWiki interlanguage prefix
+WMF language code

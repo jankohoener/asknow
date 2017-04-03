@@ -1,0 +1,4 @@
+Art UK collection ID
+Art UK collection identifier
+BBC Your Paintings collection identifier
+Your Paintings collection identifier

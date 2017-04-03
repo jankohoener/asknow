@@ -1,0 +1,11 @@
+LCAuth ID
+LCAuth
+LCAuth identifier
+LCCN identifier
+LCCN identifier
+LCNAF
+LCSH
+Library of Congress Control Number
+Library of Congress Name Authority File
+Library of Congress Subject Headings
+LoC Authorities
