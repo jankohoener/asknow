@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>AskNow Demonstrator</title>
+		<link rel="stylesheet" href="/css/asknow.css">
+		<meta charset="UTF-8">
+	</head>
+	
+	<body>
+		<nav>
+		{% if loggedin %}
+			<a href="./logout">Logout</a>
+		{% else %}
+			<a href="./signup">Signup</a> | 
+			<a href="./login">Login</a>
+		{% endif %}
+		</nav>
+		<h1>AskNow Demonstrator</h1>
+		<form>
+			<label>
+				What's your question:
+				<input type="text" name="q" value="{{q}}">
+			</label>
+			<input type="submit" value="AskNow">
+		</form>
+		{% if error %}
+		<div class="error">We're sorry, AskNow could not answer your question: "{{q}}".<br>
+		We have received the following error message: <span class="message">{{message}}</span></div>
+		{% endif %}
+		{% block answer %}
+		{% endblock %}
+	</body>
+</html>
