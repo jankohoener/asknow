@@ -8,3 +8,5 @@ At the end of each output, there's a path to a build JAR file. Link this file in
   cd $dir
   ant
   ```
+
+You can run the files via Eclipse's Run function.
