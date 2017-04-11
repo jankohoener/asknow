@@ -2,7 +2,7 @@
 import urllib, urllib2
 import json
 
-def fetch_wikidata_data():
+def fetch_wikidata_props():
 	WIKIDATA_API_URL = 'https://www.wikidata.org/w/api.php'
 	param = {}
 	param['action'] = 'query'
@@ -32,4 +32,4 @@ def fetch_wikidata_data():
 			break
 				
 if __name__ == '__main__':
-	fetch_wikidata_data()
+	fetch_wikidata_props()
