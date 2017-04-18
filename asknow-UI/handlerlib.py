@@ -22,16 +22,6 @@ class Handler(webapp2.RequestHandler):
 	
 	SECRET = "The AskNow secret"
 	
-	def urlencode(self, params): ## FIXME: This is FUUUUUCKIN' UGLY!
-		paramlist = []
-		for k, v in params.items():
-			if type(v) == str:
-				val = v.encode('utf-8')
-			else:
-				val = str(v)
-			paramlist.append(k + '=' + val)
-		return '&'.join(paramlist)
-	
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
 		
