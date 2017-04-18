@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import webapp2
 import os
 import jinja2
@@ -6,8 +7,10 @@ import hashlib, uuid
 def joinfunc(array, wrapper):
 	wrap_array = [wrapper % x for x in array]
 	a = []
-	a.append(', '.join(wrap_array[0:-1]))
-	a.append(wrap_array[-1])
+	if ', '.join(wrap_array[0:-1]):
+		a.append(', '.join(wrap_array[0:-1]))
+	if wrap_array[-1]:
+		a.append(wrap_array[-1])
 	return ' and '.join(a)
 
 class Handler(webapp2.RequestHandler):
@@ -18,6 +21,16 @@ class Handler(webapp2.RequestHandler):
 	jinja_env.filters['joinfunc'] = joinfunc
 	
 	SECRET = "The AskNow secret"
+	
+	def urlencode(self, params): ## FIXME: This is FUUUUUCKIN' UGLY!
+		paramlist = []
+		for k, v in params.items():
+			if type(v) == str:
+				val = v.encode('utf-8')
+			else:
+				val = str(v)
+			paramlist.append(k + '=' + val)
+		return '&'.join(paramlist)
 	
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)

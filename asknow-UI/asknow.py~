@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# -*- coding: utf-8 -*-
 
 #import webapp2
 import json
-from google.appengine.api import memcache
+from google.appengine.api import memcache, urlfetch
 import logging
 from handlerlib import *
 from datatypes import *
@@ -35,10 +35,10 @@ class AskNowDemoHandler(Handler):
 		logging.info('Retrieving answers for question "%s" from AskNow' % q)
 		#url = 'https://jankos-project.appspot.com/asknow/json?q=%s' % q # urllib.urlencode() doesn't work with UTF-8 characters!
 		url = 'https://jankos-project.appspot.com/asknow/json?%s' % urllib.urlencode(params)
-		result = urllib2.urlopen(url)
-		if result.getcode() == 200:
+		result = urlfetch.fetch(url)
+		if result.status_code == 200:
 			logging.info('Retrieved answers for question "%s" from AskNow, proceeding.' % q)
-			cur_answer = json.load(result)
+			cur_answer = json.loads(result.content)
 			return cur_answer
 		else: # FIXME: better error handling
 			return None
@@ -46,7 +46,7 @@ class AskNowDemoHandler(Handler):
 	def get(self):
 		logging.info('Start building demo page')
 		q = self.request.get('q')
-		logging.info(q)
+		q = q.encode('utf-8')
 		self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 		auth = True
 		cookie_data = self.request.cookies.get('userid')
@@ -133,7 +133,7 @@ class AskNowDemoHandler(Handler):
 			
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
-	DBPEDIASL_URL = 'http://www.dbpedia-spotlight.com/en/annotate'
+	DBPEDIASL_URL = 'http://model.dbpedia-spotlight.org/en/annotate'
 	DBPEDIASL_CONF = 0.75
 
 	def retrieve_info(self, titles):
@@ -155,8 +155,8 @@ class AskNowJSONAnswerHandler(Handler):
 		while True:
 			params = urllib.urlencode(req)
 			url = self.API_URL + '?' + params
-			urlobj = urllib2.urlopen(url)
-			json_data = json.load(urlobj)
+			urlobj = urlfetch.fetch(url)
+			json_data = json.loads(urlobj.content)
 			if json_data.get('error'):
 				answer['error'] = 3
 				answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
@@ -193,6 +193,7 @@ class AskNowJSONAnswerHandler(Handler):
 	def get(self):
 		known_answers = {
 			'who is the president of the united states': ['Barack Obama'],
+			'how many goals did gerd müller score': ['Gerd Müller'],
 			'who is the president elect of the united states': ['Donald Trump'],
 			'in which city was beethoven born': ['Bonn'],
 			'in which city was adenauer born': ['Cologne'],
@@ -204,6 +205,7 @@ class AskNowJSONAnswerHandler(Handler):
 		query = self.request.get('q')
 		question = self.request.get('q')
 		question = question.lower().replace('?', '')
+		question = question.encode('utf-8')
 		answers = {}
 		if not question:
 			answers = { 'error': 2, 'message': 'Application needs a q parameter, none given.' }
@@ -212,23 +214,24 @@ class AskNowJSONAnswerHandler(Handler):
 			answers['answered'] = True
 		else:
 			param = {}
-			param['text'] = query
+			param['text'] = question
 			param['confidence'] = self.DBPEDIASL_CONF
 			params = 'text=%s&confidence=%s' % (param['text'], param['confidence'])
 			url = self.DBPEDIASL_URL + '?' + urllib.urlencode(param)
-			req = Request(url)
-			req.add_header('Accept', 'application/json')
-			a = urllib.urlopen(req).read()
-			entityobj = json.loads(a)
-			if entityobj.get('Resources'):
-				titles = []
-				for entity in entityobj['Resources']:
-					if entity.get('@URI'):
-						titles.append(os.path.basename(entity['@URI']))
-				if titles:
-					answers = self.retrieve_info(titles)
-					answers['answered'] = False
-		answers['question'] = query
+			headers = { 'Accept' : 'application/json' }
+			a = urlfetch.fetch(url, headers = headers)
+			if a.status_code == 200:
+				entityobj = json.loads(a.content)
+				if entityobj.get('Resources'):
+					titles = []
+					for entity in entityobj['Resources']:
+						if entity.get('@URI'):
+							title = os.path.basename(entity['@URI']).encode('utf-8')
+							titles.append(title)
+							if titles:
+								answers = self.retrieve_info(titles)
+								answers['answered'] = False
+		answers['question'] = query.encode('utf-8')
 		json_string = json.dumps(answers)
 		self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
 		self.write(json_string)

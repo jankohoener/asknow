@@ -3,12 +3,16 @@
 {% block answer %}
 	{% for answers in answerslist %}
 		<p class="answers">
-		{% if answers['count'] == 1 %}
-		The answer to your question "{{answers.question}}" is:
+		{% if answers['answered'] %}
+			{% if answers['count'] == 1 %}
+				The answer to your question "{{answers.question}}" is:
+			{% else %}
+				The answers to your question "{{answers.question}}" are:
+				{% endif %}
+			{{answers.titles|joinfunc('<b>%s</b>')|safe}}
 		{% else %}
-		The answers to your question "{{answers.question}}" are:
+			AskNow does not know to answer your question "{{answers.question}}". Here is some information related to the entities of your question.
 		{% endif %}
-		{{answers.titles|joinfunc('<b>%s</b>')|safe}}
 		</p>
 		<br>
 		{% for answer in answers.information %}
