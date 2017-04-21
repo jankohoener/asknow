@@ -131,51 +131,7 @@ public class ZipLuceneIndexCreator {
 			writer.addDocument(doc);
 		}
 
-		/*byte[] buffer = new byte[65536];
-		int noRead;
-		while ((noRead = in.read(buffer)) != -1) {
-			String bytestr = new String(buffer);
-			System.out.println("***** BYTESTRING *****");
-			System.out.println(bytestr);
-			System.out.println("***** END *****");
-			//System.out.write(buffer, 0, noRead);
-			//Document doc = new Document();
-		}*/
 		in.close();
-
-		/*ZipFile zipFile = new ZipFile(zipFileName);
-
-		Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-		while(entries.hasMoreElements()){
-			ZipEntry entry = entries.nextElement();
-			InputStream stream = zipFile.getInputStream(entry);
-			System.out.println(stream.toString());
-		}
-
-		zipFile.close();
-		 */
-		/*
-			fr = new FileReader(f);
-			doc.add(new TextField("contents", fr));
-			doc.add(new StringField("path", f.getPath(), Field.Store.YES));
-			doc.add(new StringField("filename", f.getName(), Field.Store.YES));
-
-			writer.addDocument(doc);
-			System.out.println("Added: " + f);
-		} catch (Exception e) {
-			System.out.println("Could not add: " + f);
-		} finally {
-			fr.close();
-		}
-
-
-		int newNumDocs = writer.numDocs();
-		System.out.println("");
-		System.out.println("************************");
-		System.out.println(newNumDocs  + " documents added.");
-		System.out.println("************************");
-		 */
 	}
 
 
