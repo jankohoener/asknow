@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 
@@ -30,6 +29,9 @@ import org.apache.lucene.store.FSDirectory;
 public class ZipLuceneIndexCreator {
 	private IndexWriter writer;
 	private static StandardAnalyzer analyzer = new StandardAnalyzer();
+	
+	private final int max_entries = 200000000; // Number of maximum entries added to the index
+	// Set to Integer.MAX_VALUE for unlimited number of entries
 
 	/**
 	 * @param args
@@ -101,8 +103,8 @@ public class ZipLuceneIndexCreator {
 
 		InputStream in = new GZIPInputStream(new FileInputStream(zipFileName));
 		Scanner sc = new Scanner(in);
-		int i = 0;
-		while (i < 200000000 && sc.hasNext()) { // set maximum limit of 200 Mil. docs for memory reasons
+		int i = 1;
+		while (i <= max_entries && sc.hasNext()) {
 			String curLine = sc.nextLine();
 			if (curLine.startsWith("#")) {
 				continue; // ignore comments
