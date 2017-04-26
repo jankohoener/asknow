@@ -1,24 +1,17 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -43,7 +36,7 @@ public class ZipLuceneIndexCreator {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException{
-		System.out.println("Reading in Lucene index folder and Wikidata data folder...");
+		System.out.println("Reading in Lucene index folder and GZip file...");
 		Path LUCENE_INDEX_FOLDER = null;
 		String ZIP_FILE_NAME = "";
 		ZipLuceneIndexCreator indexer = null;
@@ -59,7 +52,7 @@ public class ZipLuceneIndexCreator {
 				System.out.println("Please give in the location of the Lucene index folder: ");
 				String input = br.readLine();
 				LUCENE_INDEX_FOLDER = Paths.get(input);
-				System.out.println("Please give in the location of the Wikidata data folder: ");
+				System.out.println("Please give in the location of the GZip File: ");
 				input = br.readLine();
 				ZIP_FILE_NAME = input.replaceAll("\n", "");
 			}
@@ -108,17 +101,18 @@ public class ZipLuceneIndexCreator {
 
 		InputStream in = new GZIPInputStream(new FileInputStream(zipFileName));
 		Scanner sc = new Scanner(in);
-		while (sc.hasNext()) {
+		int i = 0;
+		while (i < 200000000 && sc.hasNext()) { // set maximum limit of 200 Mil. docs for memory reasons
 			String curLine = sc.nextLine();
 			if (curLine.startsWith("#")) {
 				continue; // ignore comments
 			}
 			String subject, predicate, object;
-			String[] curLineParts = curLine.split("\\s+");
+			String[] curLineParts = curLine.split("\\s+", 3);
 			if (curLineParts.length >= 3) {
 				subject = curLineParts[0];
 				predicate = curLineParts[1];
-				object = curLineParts[2];
+				object = curLineParts[2].replaceAll("\\s+\\.$", "");
 			}
 			else {
 				continue;
@@ -129,8 +123,12 @@ public class ZipLuceneIndexCreator {
 			doc.add(new TextField("predicate", predicate, Field.Store.YES));
 			doc.add(new TextField("object", object, Field.Store.YES));
 			writer.addDocument(doc);
+			i++; // only increment when the document has been added
+			if ((i % 1000000) == 0) {
+				System.out.println(Integer.toString(i) + " documents added, .");
+			}
 		}
-
+		sc.close();
 		in.close();
 	}
 
