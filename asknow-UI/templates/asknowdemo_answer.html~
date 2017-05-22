@@ -19,7 +19,9 @@
 			<div class="information">
 			<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
 			{{answer.abstract | safe}}
-			<span class="wplink">Read further information at <a href="{{answer.wplink}}">Wikipedia</a>.</span>
+			<hr />
+			<span class="wplink">Read the article on <a href="{{answer.wplink}}">Wikipedia</a>.</span>
+			<span class="glink">Find further information on <a href="{{answer.glink}}">Genesis</a>.</span>
 			</div>
 			<div class="image">
 			An image of {{answer.title}}:<br>
