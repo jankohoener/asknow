@@ -31,3 +31,8 @@ body {
 	padding: 5px;
 	margin: 4px;
 }
+
+nav {
+	text-align: right;
+	float: right;
+}

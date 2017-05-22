@@ -3,29 +3,36 @@
 {% block answer %}
 	{% for answers in answerslist %}
 		<p class="answers">
-		{% if answers['answered'] %}
-			{% if answers['count'] == 1 %}
+		{% if answers['answered']%}
+			{% if answers['lentitles'] == 1 %}
 				The answer to your question "{{answers.question}}" is:
 			{% else %}
 				The answers to your question "{{answers.question}}" are:
-				{% endif %}
-			{{answers.titles|joinfunc('<b>%s</b>')|safe}}
+			{% endif %}
+			{{answers.titles|joinfunc('<b>%s</b>')|safe}}.
 		{% else %}
-			AskNow does not know to answer your question "{{answers.question}}". Here is some information related to the entities of your question.
+			AskNow does not know to answer your question "{{answers.question}}".
+		{% endif %}
+		{% if answers['leninfo'] > 0 %}
+			Here is some information related to the entities of your question.
 		{% endif %}
 		</p>
-		<br>
-		{% for answer in answers.information %}
-			<div class="information">
-			<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
-			{{answer.abstract | safe}}
-			<span class="wplink">Read further information at <a href="{{answer.wplink}}">Wikipedia</a>.</span>
-			</div>
-			<div class="image">
-			An image of {{answer.title}}:<br>
-			<img src="{{answer.imgsrc}}" alt="An image of {{answer.title}}">
-			</div>
-			</div>
-		{% endfor %}
+		{% if answers.leninfo > 0 %}
+			<br>
+			{% for answer in answers.information %}
+				<div class="information">
+				<div class="abstract">Information on <i>{{answer.title}}</i> from Wikipedia:<br>
+				{{answer.abstract | safe}}
+				<hr />
+				<span class="wplink">Read the article on <a href="{{answer.wplink}}">Wikipedia</a>.</span>
+				<span class="glink">Find further information on <a href="{{answer.glink}}">Genesis</a>.</span>
+				</div>
+				<div class="image">
+				An image of {{answer.title}}:<br>
+				<img src="{{answer.imgsrc}}" alt="An image of {{answer.title}}">
+				</div>
+				</div>
+			{% endfor %}
+		{% endif %}
 	{% endfor %}
 {% endblock %}

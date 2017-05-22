@@ -36,3 +36,7 @@ nav {
 	text-align: right;
 	float: right;
 }
+
+.wplink, .glink {
+	font-size: smaller;
+}
