@@ -30,7 +30,7 @@ class AskNowDemoHandler(Handler):
 		self.render(template, loggedin = loggedin)
 	
 	def retrieve_answers(self, q):
-		params = { 'q': q.encode('utf-8') }
+		params = { 'q': q }
 		cur_answer = {}
 		logging.info('Retrieving answers for question "%s" from AskNow' % q)
 		#url = 'https://jankos-project.appspot.com/asknow/json?q=%s' % q # urllib.urlencode() doesn't work with UTF-8 characters!
@@ -46,6 +46,7 @@ class AskNowDemoHandler(Handler):
 	def get(self):
 		logging.info('Start building demo page')
 		q = self.request.get('q')
+		q = q.encode('utf-8')
 		self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 		auth = True
 		cookie_data = self.request.cookies.get('userid')
@@ -133,8 +134,6 @@ class AskNowDemoHandler(Handler):
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
 	DBPEDIASL_URL = 'http://model.dbpedia-spotlight.org/en/annotate'
-	GENESIS_URL = 'http://genesis.aksw.org/resource'
-	DBPEDIA_URL = 'http://dbpedia.org/resource/'
 	DBPEDIASL_CONF = 0.75
 
 	def retrieve_info(self, titles):
@@ -169,11 +168,6 @@ class AskNowJSONAnswerHandler(Handler):
 					answer[pageid] = {}
 				if info.get('title'):
 					answer[pageid]['title'] = info['title']
-					gparams = {}
-					gparams['title'] = info['title'].encode('utf-8')
-					gparams['url'] = self.DBPEDIA_URL + info['title'].replace(' ', '_') # FIXME: can I do this cleaner?
-					gparams['url'] = gparams['url'].encode('utf-8')
-					answer[pageid]['glink'] = self.GENESIS_URL + '?' + urllib.urlencode(gparams)
 					if info['title'] not in answers['titles']:
 						answers['titles'].append(info['title'])
 				if info.get('extract'):
@@ -234,10 +228,10 @@ class AskNowJSONAnswerHandler(Handler):
 						if entity.get('@URI'):
 							title = os.path.basename(entity['@URI']).encode('utf-8')
 							titles.append(title)
-					if titles:
-						answers = self.retrieve_info(titles)
-						answers['answered'] = False
-		answers['question'] = query
+							if titles:
+								answers = self.retrieve_info(titles)
+								answers['answered'] = False
+		answers['question'] = query.encode('utf-8')
 		json_string = json.dumps(answers)
 		self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
 		self.write(json_string)

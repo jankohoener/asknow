@@ -133,8 +133,6 @@ class AskNowDemoHandler(Handler):
 class AskNowJSONAnswerHandler(Handler):
 	API_URL = 'https://en.wikipedia.org/w/api.php'
 	DBPEDIASL_URL = 'http://model.dbpedia-spotlight.org/en/annotate'
-	GENESIS_URL = 'http://genesis.aksw.org/resource'
-	DBPEDIA_URL = 'http://dbpedia.org/resource/'
 	DBPEDIASL_CONF = 0.75
 
 	def retrieve_info(self, titles):
@@ -165,25 +163,12 @@ class AskNowJSONAnswerHandler(Handler):
 				continue
 			pageids = json_data['query']['pageids']
 			for pageid, info in json_data['query']['pages'].items():
-				if info.get('missing') == '': # error case: page doesn't exist. Get out!
-					if info.get('title'):
-						if info['title'] not in answers['titles']:
-							answers['titles'].append(info['title'])
-					continue
 				if not answer.get(pageid):
 					answer[pageid] = {}
-				logging.debug(info)
 				if info.get('title'):
+					answer[pageid]['title'] = info['title']
 					if info['title'] not in answers['titles']:
 						answers['titles'].append(info['title'])
-					if info.get('missing') == '':
-						continue
-					answer[pageid]['title'] = info['title']
-				gparams = {}
-				gparams['title'] = info['title'].encode('utf-8')
-				gparams['url'] = self.DBPEDIA_URL + info['title'].replace(' ', '_') # FIXME: can I do this cleaner?
-				gparams['url'] = gparams['url'].encode('utf-8')
-				answer[pageid]['glink'] = self.GENESIS_URL + '?' + urllib.urlencode(gparams)
 				if info.get('extract'):
 					answer[pageid]['abstract'] = info['extract']
 				if info.get('fullurl'):
@@ -195,8 +180,7 @@ class AskNowJSONAnswerHandler(Handler):
 			if json_data.get('batchcomplete') == '':
 				break
 		answers['information'] = answer.values()
-		answers['leninfo'] = len(answers['information'])
-		answers['lentitles'] = len(answers['titles'])
+		answers['count'] = len(answers['information'])
 		return answers
 	
 	
@@ -207,8 +191,6 @@ class AskNowJSONAnswerHandler(Handler):
 	"""
 	def get(self):
 		known_answers = {
-			'how many symphonies did beethoven compose': ['9'],
-			'how many inhabitants does oberhausen have': ['210,934'],
 			'who is the president of the united states': ['Barack Obama'],
 			'how many goals did gerd müller score': ['Gerd Müller'],
 			'who is the president elect of the united states': ['Donald Trump'],
@@ -247,11 +229,7 @@ class AskNowJSONAnswerHandler(Handler):
 							titles.append(title)
 					if titles:
 						answers = self.retrieve_info(titles)
-			answers['answered'] = False
-			if not answers.get('leninfo'):
-				answers['leninfo'] = 0
-			if not answers.get('lentitles'):
-				answers['lentitles'] = 0
+						answers['answered'] = False
 		answers['question'] = query
 		json_string = json.dumps(answers)
 		self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
