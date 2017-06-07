@@ -9,8 +9,8 @@ handlers:
 - url: /css
   static_dir: css
 
-- url: /.*
-  script: main.app
+- url: /images
+  static_dir: images
 
 libraries:
 - name: jinja2

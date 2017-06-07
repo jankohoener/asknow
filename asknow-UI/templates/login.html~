@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "asknowbase.html" %}
 
 {% block nav %}
 {% endblock %}

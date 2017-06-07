@@ -1,4 +1,4 @@
-{% extends "asknowdemo.html" %}
+{% extends "demo.html" %}
 
 {% block answer %}
 	{% for answers in answerslist %}
@@ -26,7 +26,8 @@
 						<hr />
 						<span class="wplink">Read the article on <a href="{{answer.wplink}}">Wikipedia</a>.</span>
 						{% if answer['lenrelent'] > 0 %}
-							<span class="relatedentities">Related entities: 
+							<br />
+							<span class="relatedentities">Related entities from DBPedia: 
 							<ul>
 							{% for relent in answer.relents %}
 								<li><a href="{{relent.url}}">{{relent.title}}</a></li>

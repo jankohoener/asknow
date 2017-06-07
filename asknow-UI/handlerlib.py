@@ -4,6 +4,8 @@ import os
 import jinja2
 import hashlib, uuid
 
+ASKNOW_PATH = '/asknow/'
+
 def joinfunc(array, wrapper):
 	wrap_array = [wrapper % x for x in array]
 	a = []
@@ -46,3 +48,9 @@ class Handler(webapp2.RequestHandler):
 		
 	def verify_password(self, pwhash, password, salt):
 		return self.generate_pwhash(password, salt) == pwhash
+		
+	def retrieve_title_from_url(self, url):
+		return url.replace('http://dbpedia.org/resource/', '').replace('_', ' ')
+	
+	def encode_title(self, title):
+		return title.replace(' ', '_')

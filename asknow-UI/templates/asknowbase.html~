@@ -16,7 +16,6 @@
 		{% endif %}
 		</nav>
 		{% endblock %}
-		<h1>AskNow Demonstrator</h1>
 		{% block content %}
 		{% endblock %}
 	</body>
