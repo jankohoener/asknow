@@ -1,7 +1,0 @@
-{% extends "wikibase.html" %}
-{% block content %}
-<form action="post">
-<textarea name="content"></textarea>
-<input type="submit">
-</form>
-{% endblock %}
