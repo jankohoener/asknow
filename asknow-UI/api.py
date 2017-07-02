@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2016 Google Inc.
+# Copyright 2017 Janko Hoener
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -92,86 +92,6 @@ class AskNowJSONAnswerHandler(Handler):
 		resp['lenanswers'] = len(resp['answers'])
 		resp['status'] = 0
 		resp['message'] = 'Connection successful.'
-				
-			
-		"""
-		for title in titles:
-			self.retrieve_summary(title)
-			self.retrieve_description(title)
-			self.retrieve_similar(title)
-			self.retrieve_images(title)
-			self.retrieve_videos(title)
-			
-			answers: [ {objects} ]
-			objects: { "summary":
-					   "description":
-					   "similar":
-					   "images":
-					   "videos":
-					   }
-		
-		if len(titles) == 0:
-			answers['lentitles'] = len(answers['titles'])
-			return answers
-		req['action'] = 'query'
-		req['prop'] = 'info|pageimages|extracts'
-		req['titles'] = '|'.join(titles)
-		req['inprop'] = 'url'
-		req['piprop'] = 'thumbnail'
-		req['pilicense'] = 'free'
-		req['pithumbsize'] = 300
-		req['exintro'] = True
-		req['exsectionformat'] = 'raw'
-		req['format'] = 'json'
-		req['indexpageids'] = True
-		req['redirects'] = True
-		while True:
-			try:
-				params = urllib.urlencode(req)
-				url = self.API_URL + '?' + params
-				urlobj = urlfetch.fetch(url)
-			except:
-				answer['error'] = 2
-				answer['message'] = 'Cannot connect to Wikipedia API'
-				return answer
-			else:
-				json_data = json.loads(urlobj.content)
-				if json_data.get('error'):
-					answer['error'] = 3
-					answer['message'] = 'Error parsing Wikipedia API: %s' % json_data['error']['info']
-					answers['information'].append(answer)
-					continue
-				pageids = json_data['query']['pageids']
-				for pageid, info in json_data['query']['pages'].items():
-					if info.get('missing') == '': # error case: page doesn't exist. Get out!
-						if info.get('title'):
-							if info['title'] not in answers['titles']:
-								answers['titles'].append(info['title'])
-						continue
-					if not answer.get(pageid):
-						answer[pageid] = {}
-					if info.get('title'):
-						if info['title'] not in answers['titles']:
-							answers['titles'].append(info['title'])
-					if info.get('missing') == '':
-						continue
-					answer[pageid]['title'] = info['title']
-					answer[pageid]['relents'] = self.retrieve_related_entities(info['title'])
-					answer[pageid]['lenrelent'] = len(answer[pageid]['relents'])
-					if info.get('extract'):
-						answer[pageid]['abstract'] = info['extract']
-					if info.get('fullurl'):
-						answer[pageid]['wplink'] = info['fullurl']
-					if info.get('thumbnail'):
-						answer[pageid]['imgsrc'] = info['thumbnail']['source']
-					if json_data.get('continue'):
-						req.update(json_data['continue'])
-				if json_data.get('batchcomplete') == '':
-					break
-		answers['information'] = answer.values()
-		answers['lentitles'] = len(answers['titles'])
-		return answers
-		"""
 		return resp
 		
 	def retrieve_entities(self, phrase):
@@ -180,8 +100,8 @@ class AskNowJSONAnswerHandler(Handler):
 		param['confidence'] = self.DBPEDIASL_CONF
 		params = 'text=%s&confidence=%s' % (param['text'], param['confidence'])
 		url = self.DBPEDIASL_URL + '?' + urllib.urlencode(param)
+		logging.info('Retrieving entities for %s from %s' % (phrase, url))
 		headers = { 'Accept' : 'application/json' }
-		logging.debug(url)
 		retry = 2
 		while retry:
 			try:
@@ -201,6 +121,7 @@ class AskNowJSONAnswerHandler(Handler):
 								title = self.retrieve_title_from_url(entity['@URI']).encode('utf-8')
 								titles.append(title)
 						if titles:
+							logging.info('Successfully retrieved entities for %s' % phrase)
 							return titles
 						else:
 							return []
@@ -208,40 +129,9 @@ class AskNowJSONAnswerHandler(Handler):
 						return []
 				else:
 					return []
-
-	"""def retrieve_related_entities(self, title):
-		param = {}
-		param['query'] = 
-		PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX dbo:<http://dbpedia.org/ontology/>
-		PREFIX dbr:<http://dbpedia.org/resource/>
-		PREFIX vrank:<http://purl.org/voc/vrank#>
-		SELECT DISTINCT ?url FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> WHERE {
-		<http://dbpedia.org/resource/%s> ?p ?url. ?url vrank:hasRank/vrank:rankValue ?w.
-		FILTER( regex(str(?url), '^(?!http://dbpedia.org/resource/Category).+'))
-		FILTER( regex(str(?url), '^(?!http://dbpedia.org/class/yago/).+'))
-		FILTER( regex(str(?url), '^(?!http://www.wikidata.org/entity).+'))}
-		ORDER BY DESC(?w) LIMIT 20 % self.encode_title(title)
-		param['default-graph-uri'] = 'http://dbpedia.org'
-		param['format'] = 'application/sparql-results+json'
-		param['timeout'] = 30000
-		relents = []
-		params = urllib.urlencode(param)
-		url = self.DBPEDIA_API_URL + '?' + params
-		urlobj = urllib2.urlopen(url)
-		json_data = json.load(urlobj)
-		for prop in json_data['results']['bindings']:
-			relent = {}
-			relent['url'] = prop['url']['value']
-			relent['title'] = self.retrieve_title_from_url(relent['url'])
-			relents.append(relent)
-		return relents
-		"""
 	
 	def retrieve_titles(self, question):
-		# FIXME: this should use a call to an AskNow API!!!
-		#if type(question) is not str or not question:
-		#	raise ValueError('Question must be a non-null string')
+		# FIXME: this should use a call to an AskNow API
 		known_answers = {
 			'how many symphonies did beethoven compose': [9],
 			'how many inhabitants does oberhausen have': [210934],
@@ -264,27 +154,33 @@ class AskNowJSONAnswerHandler(Handler):
 
 	def get(self):
 		query = question = self.request.get('q')
+		logging.info('Generating JSON for query %s' % query)
 		question = question.lower().replace('?', '')
 		question = question.encode('utf-8')
 		answers = {}
 		if query:
+			logging.info('Retrieving titles for question %s' % question)
 			titles = self.retrieve_titles(question)
-			logging.debug(titles)
+			logging.info('Retrieved %s titles.' % len(titles))
 			if len(titles) > 0:
+				logging.info('Question answered by AskNow, retrieving info for titles.')
 				answers = self.retrieve_info(titles)
-				if answers.get('error'):
-					answers['answered'] = False
-				else:
-					answers['answered'] = True
+				answers['answered'] = True
 				if len(answers['information']) == 0 and answers.get('lenanswers') > 0:
+					logging.info('Question answered, but no information on entities available.' +
+						'Loading info for entities of question.')
 					entitytitles = self.retrieve_entities(question)
 					entityanswers = self.retrieve_info(entitytitles)
 					answers['information'].extend(entityanswers['information'])
+				logging.info('Information successfully retrieved.')
 			else:
+				logging.info('Question cannot be answered by AskNow.' +
+					'Attempting to load entities of the question.')
 				titles = self.retrieve_entities(question)
 				answers = self.retrieve_info(titles)
 				answers['answers'] = []
 				answers['lenanswers'] = 0
+				answers['answered'] = False
 		else:
 			answers = { 'status': 2, 'message': 'Application needs a q parameter, none given.' }
 		answers['question'] = query

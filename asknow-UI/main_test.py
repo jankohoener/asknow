@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2017 Janko Hoener
+# Copyright 2016 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import webtest
 
-from userauth import *
-from api import *
-from demo import *
+import main
 
-ASKNOW_PATH = '/asknow/'
-app = webapp2.WSGIApplication([
-		webapp2.Route(ASKNOW_PATH + 'demo', handler = AskNowDemoHandler, name = 'demo'),
-		(ASKNOW_PATH + 'json', AskNowJSONAnswerHandler),
-		(ASKNOW_PATH + 'signup', AskNowSignUpHandler),
-		(ASKNOW_PATH + 'login', AskNowLoginHandler),
-		(ASKNOW_PATH + 'logout', AskNowLogoutHandler),
-], debug=True)
+
+def test_get():
+    app = webtest.TestApp(main.app)
+
+    response = app.get('/')
+
+    assert response.status_int == 200
+    assert response.body == 'Hello, World!'
