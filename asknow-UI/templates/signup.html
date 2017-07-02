@@ -5,22 +5,27 @@
 
 {% block content %}
 	<form method="post">
-	<label>User name: 
-		<input type="text" name="username" value="{{values.username}}">
-		<span class="error">{{errors.username}}</span>
-	</label>
-	<label>Password:
-		<input type="password" name="password">
-		<span class="error">{{errors.password}}</span>
-	</label>
-	<label>Verify password:
-		<input type="password" name="verify">
-		<span class="error">{{errors.verify}}</span>
-	</label>
-	<label>E-mail:
-		<input type="text" name="email" value="{{values.email}}">
-		<span class="error">{{errors.email}}</span>
-	</label>
+		<label for="username">User name:</label>
+		<input type="text" name="username" id="username" value="{{values.username}}"><br />
+		{% if errors.username %}
+			<span class="error">{{errors.username}}</span><br />
+		{% endif %}
+		<label for="password">Password:</label>
+		<input type="password" name="password" id="password"><br />
+		{% if errors.password %}
+			<span class="error">{{errors.password}}</span><br />
+		{% endif %}
+		<label for="verify">Verify password:</label>
+		<input type="password" name="verify" id="verify"><br />
+		{% if errors.verify %}
+			<span class="error">{{errors.verify}}</span><br />
+		{% endif %}
+		<label for="email">E-mail:</label>
+		<input type="text" name="email" id="email" value="{{values.email}}"><br />
+		{% if errors.email %}
+			<span class="error">{{errors.email}}</span><br />
+		{% endif %}
+			
 		<input type="submit">
 	</form>
 {% endblock %}

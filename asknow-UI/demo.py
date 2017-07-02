@@ -22,7 +22,8 @@ from datatypes import *
 from userauth import *
 import urllib, urllib2
 from urllib2 import Request
-import os
+import os, sys
+from google.appengine.api.urlfetch_errors import *
 
 class AskNowDemoHandler(Handler):
 	ASKNOW_URL = 'https://jankos-project.appspot.com/asknow/json' # FIXME: use real AskNow
@@ -37,13 +38,36 @@ class AskNowDemoHandler(Handler):
 		cur_answer = {}
 		logging.info('Retrieving answers for question "%s" from AskNow' % q)
 		url = self.ASKNOW_URL + '?%s' % urllib.urlencode(params)
-		result = urlfetch.fetch(url)
-		if result.status_code == 200:
-			logging.info('Retrieved answers for question "%s" from AskNow, proceeding.' % q)
-			cur_answer = json.loads(result.content)
-			return cur_answer
-		else: # FIXME: better error handling
-			return None
+		retry = 2
+		while retry:
+			try:
+				result = urlfetch.fetch(url)
+			except:
+				retry = retry - 1
+				if not retry:
+					exc_type, exc_value, exc_traceback = sys.exc_info()
+					logging.debug(exc_value)
+					cur_answer['status'] = 2
+					cur_answer['message'] = 'Cannot reach AskNow API.'
+					cur_answer['leninfo'] = 0
+					cur_answer['lentitles'] = 0
+					cur_answer['question'] = q
+					cur_answer['answered'] = False
+					return cur_answer
+			else:
+				if result.status_code == 200:
+					logging.info('Retrieved answers for question "%s" from AskNow, proceeding.' % q)
+					cur_answer = json.loads(result.content)
+					cur_answer['status'] = 0
+					cur_answer['message'] = 'Answer successfully retrieved from AskNow'
+				else:
+					cur_answer['status'] = 4
+					cur_answer['message'] = 'Retrieved status code != 200 from AskNow'
+					cur_answer['leninfo'] = 0
+					cur_answer['lentitles'] = 0
+					cur_answer['question'] = q
+					cur_answer['answered'] = False
+				return cur_answer
 
 	def get(self):
 		logging.info('Start building demo page')
@@ -123,11 +147,8 @@ class AskNowDemoHandler(Handler):
 		message = ''
 		for question in display_questions:
 			cur_answers = self.retrieve_answers(question)
-			if cur_answers and not cur_answers.get('error'):
+			if cur_answers:
 				answerslist.append(cur_answers)
 				logging.info('Retrieved answers for question "%s"' % question)
-			elif cur_answers and cur_answer.error and question == q:
-				error = cur_answer.error
-				message = cur_answer.message
 		logging.info('Rendering answer page.')
 		self.render(self.ANSWER_URL, answerslist = answerslist, q = q, error = error, message = message, loggedin = username)

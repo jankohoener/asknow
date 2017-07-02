@@ -2,50 +2,102 @@
 
 {% block answer %}
 	{% for answers in answerslist %}
-		<p class="answers">
+		<p class="{{answers|answerclass()}}">
 		{% if answers['answered'] %}
-			{% if answers['lentitles'] == 1 %}
+			{% if answers['lenanswers'] == 1 %}
 				The answer to your question "{{answers.question}}" is:
 			{% else %}
 				The answers to your question "{{answers.question}}" are:
 			{% endif %}
-			{{answers.titles|joinfunc('<b>%s</b>')|safe}}.
+			{{answers.answers|joinfunc('<b>%s</b>')|safe}}.
+			
+		{% elif answers['status'] > 0 %}
+			AskNow Demonstrator retrieved an error while answering your question "{{answers.question}}":<br />
+			<strong>{{answers.message}}</strong>
 		{% else %}
 			AskNow does not know to answer your question "{{answers.question}}".
 		{% endif %}
-		{% if answers['leninfo'] > 0 %}
+		{% if answers['information'] %}
 			<br />Here is some information related to the entities of your question.
 		{% endif %}
 		</p>
-		{% if answers.leninfo > 0 %}
-			<br />
-			{% for answer in answers.information %}
+		{% if answers['information'] %}
+			{% for answer in answers['information'] %}
 				<div class="information">
-					<div class="abstract"><h2>Information on <i>{{answer.title}}</i> from Wikipedia:</h2>
-						{{answer.abstract | safe}}
-						<hr />
-						<span class="furtherinformation">
-							<span class="wplink">Read the article on <a href="{{answer.wplink}}">Wikipedia</a>.</span>
-							{% if answer['lenrelent'] > 0 %}
-								<br />
-								<span class="relatedentities">Related entities from DBPedia: 
-								<ul>
-								{% for relent in answer.relents %}
-									<li><a href="{{relent.url}}">{{relent.title}}</a></li>
-									{% endfor %}
-								</ul>
-								</span>
-							{% endif %}	
-						</span>
+					{% if answer.description %}
+					<div class="abstract">
+					<h2>Information on <i>{{answer.title}}</i> from Genesis</h2>
+						{{answer.description.description}}
 					</div>
 					<div class="imagebox">
-						{% if answer.imgsrc %}
-							<h2>An image related to <i>{{answer.title}}</i>:</h2>
-							<img class="image" src="{{answer.imgsrc}}" alt="An image of {{answer.title}}">
-						{% else %}
-							<img class="placeholder" src="/images/placeholder.png" alt="No image for {{answer.title}} available">
-						{% endif %}
+					{% if 'image' in answer.description %}
+						<img src="{{answer.description.image}}" alt="An image of {{answer.title}}" />
+					{% endif %}
 					</div>
+					{% endif %}
+					{% if answer.images %}
+					<div class="outerbox">
+					<h2>Images related to <i>{{answer.title}}</i></h2>
+						<div class="innerbox images">
+						{% for image in answer.images %}
+							<div class="gallery">
+								<a href="{{image}}"><img src="{{image}}" href="{{image}}" /></a>
+							</div>
+						{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					{% if answer.videos %}
+					<div class="outerbox">
+					<h2>Videos related to <i>{{answer.title}}</i></h2>
+						<div class="innerbox videos">
+						{% for video in answer.videos %}
+							<figure>
+								<a href="https://www.youtube.com/{{video.url}}">
+									<img src="{{video.image}}" />
+								</a>
+								<figcaption>
+									<a href="https://www.youtube.com/{{video.url}}">{{video.title}}</a> ({{video.duration}})
+								</figcaption>
+							</figure>
+						{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					{% if answer.relatedEntities %}
+					<div class="outerbox">
+						<h2>Related entities from DBPedia</h2>
+						<div class="innerbox relatedentities">
+						{% for relent in answer.relatedEntities %}
+							<figure>
+							<a href="{{relent.url}}">
+								<img src="{{relent.image}}" />
+							</a>
+							<figcaption>
+								<a href="{{relent.url}}">{{relent.title}}</a>
+							</figcaption>
+							</figure>
+						{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					{% if answer.similarEntities %}
+					<div class="outerbox">
+						<h2>Similar entities from DBPedia</h2>
+						<div class="innerbox similarentities">
+						{% for siment in answer.similarEntities %}
+							<figure>
+							<a href="{{siment.url}}">
+								<img src="{{siment.image}}" />
+							</a>
+							<figcaption>
+								<a href="{{siment.url}}">{{siment.title}}</a>
+							</figcaption>
+							</figure>
+						{% endfor %}
+						</div>
+					</div>
+					{% endif %}
 				</div>
 			{% endfor %}
 		{% endif %}

@@ -15,12 +15,21 @@ def joinfunc(array, wrapper):
 		a.append(wrap_array[-1])
 	return ' and '.join(a)
 
+def answerclass(answers):
+	if answers.get('answered'):
+		return 'answered'
+	elif answers.get('leninfo') > 0:
+		return 'not-answered-entities'
+	else:
+		return 'not-answered'
+
 class Handler(webapp2.RequestHandler):
 	template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 	
 	jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), 
 	autoescape = True)
 	jinja_env.filters['joinfunc'] = joinfunc
+	jinja_env.filters['answerclass'] = answerclass
 	
 	SECRET = "The AskNow secret"
 	

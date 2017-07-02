@@ -5,13 +5,13 @@
 
 {% block content %}
 	<form method="post">
-	<label>User name: 
-		<input type="text" name="username">
-	</label>
-	<label>Password:
-		<input type="password" name="password">
-	</label>
-	<span class="error">{{error}}</span>
-	<input type="submit">
+		<label for="username">User name</label>
+		<input type="text" name="username" id="username"><br />
+		<label for="password">Password</label>
+		<input type="password" name="password" id="password"><br />
+		{% if error %}
+			<span class="error">{{error}}</span><br />
+		{% endif %}
+		<input type="submit">
 	</form>
 {% endblock %}

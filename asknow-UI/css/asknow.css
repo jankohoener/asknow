@@ -1,5 +1,5 @@
 input[name=q] {
-	width: 70%;
+	width: 40%;
 }
 * {
 	box-sizing: border-box;
@@ -12,29 +12,35 @@ body {
 	color: #000000;
 	letter-spacing: .1px;
 }
-
-label {
-	display: block;
-}
-.answer, .answers, .information {
+form, .not-answered, .answered, .not-answered-entities, .information {
 	border: .5px solid grey;
 	padding: 5px;
 	margin: 4px;
 	overflow: auto;
-}
-.answer, .answers {
-	border: ridge;
-}
-.information {
 	width: 80%;
 	margin-left: 10%;
 	margin-right: 10%;
+}
+form {
+	border: none;
+	font-size: large;
+}
+.not-answered, .answered, .not-answered-entities {
+	border: ridge;
+	padding: 2px;
+}
+.answered {
+	border-color: green;
+}
+.not-answered, .not-answered-entities {
+	border-color: red;
+}
+.information {
 	color: #666666;
 }
 .abstract, .imagebox {
 	float: left;
 }
-
 .abstract {
 	width: 66.6%;
 }
@@ -48,23 +54,7 @@ label {
 	height: auto;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-.imagebox img.image {
 	border: 1px solid black;
-}
-
-.message {
-	color: red;
-}
-.error {
-	border: .5px solid red;
-	padding: 5px;
-	margin: 4px;
-}
-
-.furtherinformation  {
-	color: #000000;
 }
 
 nav {
@@ -81,4 +71,50 @@ h2 { font-size: small;
 	border-color: #dddddd;
 	margin: 0px;
 	margin-bottom: 10px;
+}
+h1 {
+	text-align: center;
+}
+div.gallery {
+	margin: 1px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+    padding: 1px;
+}
+div.gallery:hover, figure img {
+    border: 1px solid #777;
+}
+div.gallery img {
+    width: 100%;
+    height: auto;
+    margin: 1px;
+    padding: 1px;
+    display: inline;
+}
+.outerbox  {
+	    width: 50%;
+	    float: left;
+}
+.innerbox {
+	height: 500px;
+    overflow: scroll;
+}
+.videos figure, .relatedentities figure, .similarentities figure {
+	margin-left: 20%;
+	margin-right: 20%;
+	display: block;
+	float: left;
+	text-align: center;
+}
+.videos figure {
+	font-size: small;
+}
+figure img {
+	float: left;
+	width: 200px;
+	height: auto;
+}
+.innerbox a {
+	text-decoration: none;
 }

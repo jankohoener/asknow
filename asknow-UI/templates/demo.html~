@@ -2,17 +2,12 @@
 
 {% block content %}
 		<form>
-			<label>
-				What's your question:
-				<input type="text" name="q" value="{{q}}">
+			<label for="q">
+				Type in your question:
 			</label>
+			<input type="text" name="q" id="q" value="{{q}}">
 			<input type="submit" value="AskNow">
 		</form>
-		</nav>
-		{% if error %}
-		<div class="error">We're sorry, AskNow could not answer your question: "{{q}}".<br>
-		We have received the following error message: <span class="message">{{message}}</span></div>
-		{% endif %}
 		{% block answer %}
 		{% endblock %}
 {% endblock %}

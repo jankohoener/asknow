@@ -4,6 +4,8 @@ import os
 import jinja2
 import hashlib, uuid
 
+ASKNOW_PATH = '/asknow/'
+
 def joinfunc(array, wrapper):
 	wrap_array = [wrapper % x for x in array]
 	a = []
